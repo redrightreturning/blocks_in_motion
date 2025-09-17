@@ -33,8 +33,30 @@ export default function Box({position, rendered, index, setRendered} :
             onPointerOver={(event) => setHover(true)}
             onPointerOut={(event) => setHover(false)}>
             <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color={
-                rendered? (hovered ? 'hotpink' : 'orange') : (hovered ? 'yellow' : 'lightblue')} />
+            
+            {rendered? 
+            <meshStandardMaterial color={(hovered ? 'hotpink' : 'orange')} />
+            :
+            <meshPhysicalMaterial
+                // core glass properties
+                transmission={1} // make material physically transmissive (glass)
+                transparent={true} // allow alpha
+                opacity={1}
+                thickness={0.8} // how much the material absorbs / refracts
+                roughness={0} // smooth, reflective surface
+                metalness={0}
+                ior={1.45} // index of refraction for glass
+                reflectivity={0.6}
+                envMapIntensity={1.2}
+
+                // subtle tint and subsurface
+                attenuationColor={(hovered ? 'yellow' : 'lightblue')} // color when light passes through
+                attenuationDistance={0.6} // how far light travels inside
+
+                // clearcoat for a glossy layer on top
+                clearcoat={0.2}
+                clearcoatRoughness={0}
+            />}
         </mesh>
     )
 }

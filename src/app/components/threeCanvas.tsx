@@ -1,6 +1,6 @@
 'use client'
 import { Canvas } from "@react-three/fiber";
-import { Stars } from "@react-three/drei";
+import { OrbitControls, Stars } from "@react-three/drei";
 import Box from "./box";
 import { useState } from "react";
 import { IndexType } from "../types/indexType.interface";
@@ -33,7 +33,7 @@ export default function ThreeCanvas() {
     }
 
     return (
-        <Canvas>
+        <Canvas className="w-1/2 h-1/2 bg-green-400">
             <ambientLight intensity={Math.PI / 2} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
@@ -42,7 +42,7 @@ export default function ThreeCanvas() {
                     x.map((y: boolean[], yIndex: number) => (
                         y.map((boxValue: boolean, zIndex: number) => (
                             <Box key={`${xIndex}, ${yIndex}, ${zIndex}`} 
-                            position={[xIndex - (gridSize / 2), yIndex - (gridSize / 2), 0]}
+                            position={[xIndex - (gridSize / 2), yIndex - (gridSize / 2), zIndex - (gridSize / 2)]}
                             index={{x: xIndex, y: yIndex, z: zIndex}}
                             rendered={boxValue}
                             setRendered={toggleBox}/>
@@ -51,6 +51,7 @@ export default function ThreeCanvas() {
                 ))
             
             }
+            <OrbitControls/>
         </Canvas>
     )
 }
