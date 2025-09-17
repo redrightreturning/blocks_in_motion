@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Three from "./components/three";
+import Three from "./components/threeCanvas";
 
 export default function Home() {
   return (
