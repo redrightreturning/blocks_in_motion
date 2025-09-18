@@ -28,10 +28,12 @@ export class Array3D {
     }
 
     static isClickable(index: IndexType, array3D: Array3DType) : boolean {
-        //A bix is clickable if it is on the bottom layer of the grid
-        if (index.y === 0) return true
+        //A box is not clickable if there is a box directly above it
+        if((index.y + 1 < array3D[index.x].length) && array3D[index.x][index.y + 1][index.z]) return false
+        //A box is clickable if it is on the bottom layer of the grid
+        if(index.y === 0) return true
         //Or if there is a box directly below it
-        if (array3D[index.x][index.y - 1][index.z]) return true
+        if(array3D[index.x][index.y - 1][index.z]) return true
         return false
     }
 

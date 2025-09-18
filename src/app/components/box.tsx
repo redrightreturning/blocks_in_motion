@@ -4,6 +4,14 @@ import { Mesh } from 'three'
 import * as THREE from 'three'
 import { IndexType } from '../types/indexType.interface'
 
+//Boxes are:
+//rendered or not
+//clickable or not
+//highlighted or not (depending on slider or 'drill')
+//hovered or not
+//
+
+
 export default function Box({position, rendered, index, setRendered, isClickable} : 
     {   position: [number, number, number], 
         rendered : boolean, 
@@ -21,7 +29,7 @@ export default function Box({position, rendered, index, setRendered, isClickable
     // })
     
     return (
-        isClickable? 
+        isClickable || rendered? 
         <mesh
             position={position}
             ref={meshRef}
@@ -41,7 +49,7 @@ export default function Box({position, rendered, index, setRendered, isClickable
                 // core glass properties
                 transmission={1} // make material physically transmissive (glass)
                 transparent={true} // allow alpha
-                opacity={rendered? 1 : (isClickable ? 0.25 : 0)} // make material mostly transparent
+                opacity={isClickable ? 0.25 : 0} // make material mostly transparent
                 thickness={0.8} // how much the material absorbs / refracts
                 roughness={0} // smooth, reflective surface
                 metalness={0}

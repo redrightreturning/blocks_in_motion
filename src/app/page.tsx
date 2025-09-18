@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
-      <div className="w-1/2 h-1/2 border-4 border-black">
+      <div className="w-1/2 h-1/2 border-4 border-black rounded-lg overflow-hidden">
         <ThreeCanvas grid={grid} boxToggle={toggleBox}/>
       </div>
     </div>
