@@ -1,8 +1,6 @@
-'use client'
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import Box from "./box";
-import { useState } from "react";
 import { IndexType } from "../types/indexType.interface";
 import { Array3D, Array3DType } from "../helpers/array3D";
 
@@ -24,7 +22,8 @@ export default function ThreeCanvas({grid, boxToggle} : {grid : Array3DType, box
                             position={[xIndex - (gridSize / 2), yIndex - (gridSize / 2), zIndex - (gridSize / 2)]}
                             index={{x: xIndex, y: yIndex, z: zIndex}}
                             rendered={boxValue}
-                            setRendered={boxToggle}/>
+                            setRendered={boxToggle}
+                            isClickable={Array3D.isClickable({x: xIndex, y: yIndex, z: zIndex}, grid)}/>
                         ))
                     ))
                 ))

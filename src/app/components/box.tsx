@@ -1,18 +1,18 @@
 'use client'
 import React, { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-
 import { Mesh } from 'three'
+import * as THREE from 'three'
 import { IndexType } from '../types/indexType.interface'
 
-export default function Box({position, rendered, index, setRendered} : 
+export default function Box({position, rendered, index, setRendered, isClickable} : 
     {   position: [number, number, number], 
         rendered : boolean, 
         index: IndexType,
-        setRendered: (index: IndexType) => void}){
+        setRendered: (index: IndexType) => void,
+        isClickable: boolean}){
     const meshRef = useRef<Mesh>(null)
     const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
+
     
     // useFrame((state, delta) => {
     //     if (meshRef.current) {
@@ -21,17 +21,17 @@ export default function Box({position, rendered, index, setRendered} :
     // })
     
     return (
+        isClickable? 
         <mesh
             position={position}
             ref={meshRef}
-            scale={active ? 1.5 : 1}
+            raycast={isClickable? THREE.Mesh.prototype.raycast : undefined}
             onClick={(event) => {
-                //setActive(!active)
-                setRendered(index)
-                console.log(index)
+                event.stopPropagation()
+                if(isClickable) setRendered(index)
             }}
-            onPointerOver={(event) => setHover(true)}
-            onPointerOut={(event) => setHover(false)}>
+            onPointerOver={isClickable? (_) => setHover(true): undefined}
+            onPointerOut={isClickable? (_) => setHover(false): undefined}>
             <boxGeometry args={[1, 1, 1]} />
             
             {rendered? 
@@ -41,7 +41,7 @@ export default function Box({position, rendered, index, setRendered} :
                 // core glass properties
                 transmission={1} // make material physically transmissive (glass)
                 transparent={true} // allow alpha
-                opacity={1}
+                opacity={rendered? 1 : (isClickable ? 0.25 : 0)} // make material mostly transparent
                 thickness={0.8} // how much the material absorbs / refracts
                 roughness={0} // smooth, reflective surface
                 metalness={0}
@@ -58,5 +58,6 @@ export default function Box({position, rendered, index, setRendered} :
                 clearcoatRoughness={0}
             />}
         </mesh>
+        : <></>
     )
 }

@@ -11,12 +11,11 @@ export class Array3D {
                     Array.from({ length: size }, () => initialValue)
                     )
                 )
-        return newArray
-                
+        return newArray            
     }
 
     static updateIndex(index : IndexType, array3D: Array3DType) : Array3DType {
-        let newArray = array3D.map((xArray, x) =>
+        const newArray = array3D.map((xArray, x) =>
             x === index.x
                 ? xArray.map((yArray: boolean[], y: number) =>
                     y === index.y
@@ -26,6 +25,14 @@ export class Array3D {
                 : xArray
         )
         return newArray
+    }
+
+    static isClickable(index: IndexType, array3D: Array3DType) : boolean {
+        //A bix is clickable if it is on the bottom layer of the grid
+        if (index.y === 0) return true
+        //Or if there is a box directly below it
+        if (array3D[index.x][index.y - 1][index.z]) return true
+        return false
     }
 
 }
