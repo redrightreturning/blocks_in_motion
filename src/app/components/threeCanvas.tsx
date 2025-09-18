@@ -4,36 +4,15 @@ import { OrbitControls, Stars } from "@react-three/drei";
 import Box from "./box";
 import { useState } from "react";
 import { IndexType } from "../types/indexType.interface";
+import { Array3D, Array3DType } from "../helpers/array3D";
 
 
-export default function ThreeCanvas() {
+export default function ThreeCanvas({grid, boxToggle} : {grid : Array3DType, boxToggle: (index: IndexType) => void}) {
 
-    const gridSize = 5
-    const [grid, setGrid] = useState(
-        Array.from({ length: gridSize }, () =>
-            Array.from({ length: gridSize }, () =>
-            Array.from({ length: gridSize }, () => false)
-            )
-        )
-    )
-
-    const toggleBox = (index: IndexType) => {
-        //Set grid, only updating the values that have changed
-        setGrid(prevGrid =>
-            prevGrid.map((xArray, x) =>
-            x === index.x
-                ? xArray.map((yArray: boolean[], y: number) =>
-                    y === index.y
-                    ? yArray.map((val, z) => z === index.z ? !val : val)
-                    : yArray
-                )
-                : xArray
-            )
-        )
-    }
+    const gridSize = grid.length
 
     return (
-        <Canvas className="w-1/2 h-1/2 bg-green-400">
+        <Canvas className="bg-canvas-background" camera={{ position: [5, 5, 5], fov: 50 }}>
             <ambientLight intensity={Math.PI / 2} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
@@ -45,7 +24,7 @@ export default function ThreeCanvas() {
                             position={[xIndex - (gridSize / 2), yIndex - (gridSize / 2), zIndex - (gridSize / 2)]}
                             index={{x: xIndex, y: yIndex, z: zIndex}}
                             rendered={boxValue}
-                            setRendered={toggleBox}/>
+                            setRendered={boxToggle}/>
                         ))
                     ))
                 ))
