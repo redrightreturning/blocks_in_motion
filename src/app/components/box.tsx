@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { Mesh } from 'three'
 import * as THREE from 'three'
 import { IndexType } from '../types/indexType.interface'
+import { useGridsDispatch, useGridsState } from '../helpers/gridsContext'
 
 //Boxes are:
 //rendered or not
@@ -11,22 +12,23 @@ import { IndexType } from '../types/indexType.interface'
 //hovered or not
 //
 
-
-export default function Box({position, rendered, index, setRendered, isClickable} : 
+export default function Box({position, rendered, index, isClickable} : 
     {   position: [number, number, number], 
         rendered : boolean, 
         index: IndexType,
-        setRendered: (index: IndexType) => void,
         isClickable: boolean}){
     const meshRef = useRef<Mesh>(null)
     const [hovered, setHover] = useState(false)
 
-    
-    // useFrame((state, delta) => {
-    //     if (meshRef.current) {
-    //         meshRef.current.rotation.x += delta
-    //     }
-    // })
+    const gridsState = useGridsState()
+    const gridsDispatch = useGridsDispatch()
+    if (!gridsState || !gridsDispatch) {
+        throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
+    }
+    //Selected because it's only possible to update the selected grid
+    const grid = gridsState.grids[gridsState.selectedGridIndex]
+    const gridSize = gridsState.gridSize
+
     
     return (
         isClickable || rendered? 
@@ -36,10 +38,10 @@ export default function Box({position, rendered, index, setRendered, isClickable
             raycast={isClickable? THREE.Mesh.prototype.raycast : undefined}
             onClick={(event) => {
                 event.stopPropagation()
-                if(isClickable) setRendered(index)
+                if(isClickable) gridsDispatch({type: "update", index: index})
             }}
-            onPointerOver={isClickable? (_) => setHover(true): undefined}
-            onPointerOut={isClickable? (_) => setHover(false): undefined}>
+            onPointerOver={isClickable? () => setHover(true): undefined}
+            onPointerOut={isClickable? () => setHover(false): undefined}>
             <boxGeometry args={[1, 1, 1]} />
             
             {rendered? 

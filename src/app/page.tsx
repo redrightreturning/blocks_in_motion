@@ -3,22 +3,26 @@ import { useState } from "react";
 import { Array3D } from "./helpers/array3D";
 import ThreeCanvas from "./components/threeCanvas";
 import { IndexType } from "./types/indexType.interface";
+import Timeline from "./components/timeline";
+import { useGridsDispatch, useGridsState } from "./helpers/gridsContext";
 
 export default function Home() {
-  const gridSize = 5
-  const [grid, setGrid] = useState(Array3D.newArray(gridSize, false))
 
-  const toggleBox = (index : IndexType) => {
-    //Set grid, only updating the values that have changed
-    console.log("Toggling box at index:", index)
-    setGrid(prevGrid => Array3D.updateIndex(index, prevGrid))
+  const gridsState = useGridsState()
+  const gridsDispatch = useGridsDispatch()
+  if (!gridsState || !gridsDispatch) {
+    throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
   }
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <div className="w-1/2 h-1/2 border-4 border-black rounded-lg overflow-hidden">
-        <ThreeCanvas grid={grid} boxToggle={toggleBox}/>
+    <div className="w-full h-screen flex flex-col justify-center items-center">
+      <div className="w-1/2 h-screen flex flex-col justify-center items-center">
+        <div className="w-full h-1/2 border-4 border-black rounded-lg overflow-hidden">
+          <ThreeCanvas editable={true} gridIndex={gridsState.selectedGridIndex}/>
+        </div>
+        <Timeline/>
       </div>
+     
     </div>
   );
 }
