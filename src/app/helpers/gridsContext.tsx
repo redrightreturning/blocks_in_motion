@@ -5,7 +5,7 @@ import { IndexType } from '../types/indexType.interface';
 
 const GRID_SIZE = 5
 const GridsContext = createContext<GridsState | undefined>(undefined)
-const GridsDispatchContext = createContext<React.Dispatch<any> | undefined>(undefined)
+const GridsDispatchContext = createContext<React.Dispatch<GridsActionType> | undefined>(undefined)
 const firstGrid = [Array3D.newArray(GRID_SIZE, false)]
 
 type GridsActionType =

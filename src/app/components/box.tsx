@@ -25,9 +25,6 @@ export default function Box({position, rendered, index, isClickable} :
     if (!gridsState || !gridsDispatch) {
         throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
     }
-    //Selected because it's only possible to update the selected grid
-    const grid = gridsState.grids[gridsState.selectedGridIndex]
-    const gridSize = gridsState.gridSize
 
     
     return (

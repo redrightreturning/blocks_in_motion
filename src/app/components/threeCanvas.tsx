@@ -1,8 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Box from "./box";
-import { IndexType } from "../types/indexType.interface";
-import { Array3D, Array3DType } from "../helpers/array3D";
+import { Array3D } from "../helpers/array3D";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 
 

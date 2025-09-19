@@ -1,4 +1,3 @@
-import { Array3DType } from "../helpers/array3D";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import Button from "./button";
 import ThreeCanvas from "./threeCanvas";
@@ -10,10 +9,6 @@ export default function Timeline() {
     if (!gridsState || !gridsDispatch) {
         throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
     }
-    //Selected because it's only possible to update the selected grid
-    const grid = gridsState.grids[gridsState.selectedGridIndex]
-    const gridSize = gridsState.gridSize
-
     
     return(
         <div className="w-full h-30 mt-4">

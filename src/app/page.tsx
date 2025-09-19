@@ -1,8 +1,5 @@
 'use client'
-import { useState } from "react";
-import { Array3D } from "./helpers/array3D";
 import ThreeCanvas from "./components/threeCanvas";
-import { IndexType } from "./types/indexType.interface";
 import Timeline from "./components/timeline";
 import { useGridsDispatch, useGridsState } from "./helpers/gridsContext";
 
