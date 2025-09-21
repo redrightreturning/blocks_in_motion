@@ -14,6 +14,10 @@ export class Array3D {
         return newArray            
     }
 
+    static newFromArray(array : Array3DType): Array3DType {
+        return structuredClone(array)            
+    }
+
     static updateIndex(index : IndexType, array3D: Array3DType) : Array3DType {
         const newArray = array3D.map((xArray, x) =>
             x === index.x

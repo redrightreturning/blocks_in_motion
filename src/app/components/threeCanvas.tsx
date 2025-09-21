@@ -3,6 +3,7 @@ import { OrbitControls } from "@react-three/drei";
 import Box from "./box";
 import { Array3D } from "../helpers/array3D";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
+import NoisyBloomPass from "../helpers/noisyBloomPass";
 
 
 export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable : boolean, gridIndex: number, onClick?: () => void}) {
@@ -16,7 +17,7 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
     const gridSize = gridsState.gridSize
 
     return (
-        <Canvas onClick={onClick} className="bg-canvas-background" camera={{ position: [5, 5, 5], fov: 50 }}>
+        <Canvas onClick={onClick} className="bg-canvas-background cursor-pointer" camera={{ position: [5, 5, 5], fov: 50 }}>
             <ambientLight intensity={Math.PI / 2} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
@@ -28,13 +29,14 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
                             position={[xIndex - (gridSize / 2), yIndex - (gridSize / 2), zIndex - (gridSize / 2)]}
                             index={{x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}}
                             rendered={boxValue}
-                            isClickable={Array3D.isClickable({x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}, grid)}/>
+                            isClickable={editable? Array3D.isClickable({x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}, grid) : false}/>
                         ))
                     ))
                 ))
             
             }
             {editable? <OrbitControls /> : <></>}
+            {gridsState.noiseOn? <NoisyBloomPass /> : <></>}
         </Canvas>
     )
 }

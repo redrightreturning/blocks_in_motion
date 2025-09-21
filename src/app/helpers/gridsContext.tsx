@@ -10,18 +10,21 @@ const firstGrid = [Array3D.newArray(GRID_SIZE, false)]
 
 type GridsActionType =
 //Grid actions
-  | { type: "add" }
+  | { type: "add"; id?: number }
+  | { type: "duplicate"; id?: number }
   | { type: "update"; index: IndexType}
   | { type: "remove"; id: number }
   | { type: "reset"}
   //Grid settings actions
   | { type: "setSelected"; id: number }
   | { type: "setGridSize"; id: number }
+  | { type: "setNoise"; on: boolean }
 
   type GridsState = {
     grids: Array3DType[]
     selectedGridIndex: number
     gridSize: number
+    noiseOn: boolean
   }
 
 export function GridsProvider({ children }: { children: ReactNode }) {
@@ -29,7 +32,8 @@ export function GridsProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(gridsReducer, {
     grids: firstGrid, 
     selectedGridIndex: 0,
-    gridSize: GRID_SIZE
+    gridSize: GRID_SIZE,
+    noiseOn: false
   });
 
   return (
@@ -55,6 +59,13 @@ function gridsReducer(state: GridsState, action: GridsActionType): GridsState {
       return {
         ...state,
         grids: [...state.grids, Array3D.newArray(state.gridSize, false)],
+        selectedGridIndex: state.grids.length,
+      };
+    }
+    case 'duplicate': {
+      return {
+        ...state,
+        grids: [...state.grids, Array3D.newFromArray(state.grids[action.id ?? state.selectedGridIndex])],
       };
     }
     case 'update': {
@@ -76,10 +87,21 @@ function gridsReducer(state: GridsState, action: GridsActionType): GridsState {
       };
     }
     case 'reset': {
-      return { grids: firstGrid, selectedGridIndex: 0, gridSize: GRID_SIZE};
+      return {
+        grids: firstGrid, 
+        selectedGridIndex: 0, 
+        gridSize: GRID_SIZE,
+        noiseOn: false
+      };
     }
     case 'setSelected': {
       return { ...state, selectedGridIndex: action.id, gridSize: state.gridSize };
+    }
+    case 'setGridSize': {
+      return { ...state, gridSize: action.id, grids: state.grids.map(() => Array3D.newArray(action.id, false)), selectedGridIndex: 0 };
+    }
+    case 'setNoise': {
+      return { ...state, noiseOn: action.on };
     }
     default: {
       throw Error('Unknown action! How did we get here?');
