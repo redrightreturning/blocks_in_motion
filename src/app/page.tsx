@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div className="font-inter w-full h-screen flex flex-col justify-center items-center">
-      <div className="w-1/2 h-screen flex flex-col justify-center items-center">
+      <div className="mx-10 w-full sm:w-1/2 h-screen flex flex-col justify-center items-center">
         <div className="w-full h-1/2 border-4 border-black rounded-lg overflow-hidden">
           <ThreeCanvas editable={true} gridIndex={gridsState.selectedGridIndex}/>
         </div>

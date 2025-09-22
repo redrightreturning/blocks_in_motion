@@ -10,8 +10,8 @@ const firstGrid = [Array3D.newArray(GRID_SIZE, false)]
 
 type GridsActionType =
 //Grid actions
-  | { type: "add"; id?: number }
-  | { type: "duplicate"; id?: number }
+  | { type: "add"; id: number }
+  | { type: "duplicate"; id: number }
   | { type: "update"; index: IndexType}
   | { type: "remove"; id: number }
   | { type: "reset"}
@@ -56,16 +56,24 @@ export function useGridsDispatch() {
 function gridsReducer(state: GridsState, action: GridsActionType): GridsState {
   switch (action.type) {
     case 'add': {
+
+      const index = action.id !== undefined? action.id + 1: state.grids.length-1
+
       return {
         ...state,
-        grids: [...state.grids, Array3D.newArray(state.gridSize, false)],
-        selectedGridIndex: state.grids.length,
+        grids: [...state.grids.slice(0, index),
+                Array3D.newArray(state.gridSize, false),
+                ...state.grids.slice(index),],
+        selectedGridIndex: index,
       };
     }
     case 'duplicate': {
       return {
         ...state,
-        grids: [...state.grids, Array3D.newFromArray(state.grids[action.id ?? state.selectedGridIndex])],
+        grids: [...state.grids.slice(0, action.id ?? state.grids.length-1),
+                Array3D.newFromArray(state.grids[action.id ?? state.selectedGridIndex]),
+                ...state.grids.slice(action.id ?? state.grids.length-1),],
+        selectedGridIndex: action.id?  action.id + 1 : state.grids.length,      
       };
     }
     case 'update': {
