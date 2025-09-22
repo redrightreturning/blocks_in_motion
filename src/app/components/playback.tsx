@@ -10,10 +10,8 @@ export function Playback(){
         throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
     }
 
-    const [playing, setPlaying] = React.useState(false)
-
     useEffect(() => {
-        if (playing) {
+        if (gridsState.playing) {
             const interval = setInterval(() => {
                 gridsDispatch({type: 'setSelected', id: (gridsState.selectedGridIndex + 1) % gridsState.grids.length})
             }, 1000/FPS);
@@ -24,9 +22,9 @@ export function Playback(){
     return (
         <div className="flex flex-row font-bold">
             <button onClick={()=>{
-                setPlaying((prev)=>!prev)
+                gridsDispatch({type: 'setPlaying', on: !gridsState.playing})
             }
-                }>{playing? '[]' : '>'}</button>
+                }>{gridsState.playing? '[]' : '>'}</button>
         </div>
     )
 }

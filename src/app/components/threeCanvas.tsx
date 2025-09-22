@@ -15,6 +15,7 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
     }
     const grid = gridsState.grids[gridIndex]
     const gridSize = gridsState.gridSize
+    const canEdit = editable && !gridsState.playing
 
     return (
         <Canvas onClick={onClick} className="bg-canvas-background cursor-pointer" camera={{ position: [5, 5, 5], fov: 50 }}>
@@ -29,7 +30,7 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
                             position={[xIndex - (gridSize / 2), yIndex - (gridSize / 2), zIndex - (gridSize / 2)]}
                             index={{x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}}
                             rendered={boxValue}
-                            isClickable={editable? Array3D.isClickable({x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}, grid) : false}/>
+                            isClickable={canEdit? Array3D.isClickable({x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}, grid) : false}/>
                         ))
                     ))
                 ))

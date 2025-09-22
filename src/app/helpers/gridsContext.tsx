@@ -17,14 +17,18 @@ type GridsActionType =
   | { type: "reset"}
   //Grid settings actions
   | { type: "setSelected"; id: number }
-  | { type: "setGridSize"; id: number }
+  | { type: "setGridSize"; size: number }
+  | { type: "setOnion"; on: boolean }
   | { type: "setNoise"; on: boolean }
+  | { type: "setPlaying"; on: boolean }
 
   type GridsState = {
     grids: Array3DType[]
     selectedGridIndex: number
     gridSize: number
     noiseOn: boolean
+    onionOn: boolean
+    playing: boolean
   }
 
 export function GridsProvider({ children }: { children: ReactNode }) {
@@ -33,7 +37,9 @@ export function GridsProvider({ children }: { children: ReactNode }) {
     grids: firstGrid, 
     selectedGridIndex: 0,
     gridSize: GRID_SIZE,
-    noiseOn: false
+    noiseOn: false,
+    onionOn: false,
+    playing: false
   });
 
   return (
@@ -96,20 +102,27 @@ function gridsReducer(state: GridsState, action: GridsActionType): GridsState {
     }
     case 'reset': {
       return {
+        ...state,
         grids: firstGrid, 
         selectedGridIndex: 0, 
         gridSize: GRID_SIZE,
-        noiseOn: false
       };
     }
     case 'setSelected': {
       return { ...state, selectedGridIndex: action.id, gridSize: state.gridSize };
     }
     case 'setGridSize': {
-      return { ...state, gridSize: action.id, grids: state.grids.map(() => Array3D.newArray(action.id, false)), selectedGridIndex: 0 };
+      //TODO: Resize grids to new size. Currently does nothing
+      return { ...state, gridSize: action.size, grids: state.grids, selectedGridIndex: 0 };
     }
     case 'setNoise': {
       return { ...state, noiseOn: action.on };
+    }
+    case 'setOnion': {
+      return { ...state, onionOn: action.on };
+    }
+    case 'setPlaying': {
+      return { ...state, playing: action.on };
     }
     default: {
       throw Error('Unknown action! How did we get here?');
