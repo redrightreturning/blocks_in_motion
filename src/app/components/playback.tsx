@@ -20,11 +20,9 @@ export function Playback(){
     })
 
     return (
-        <div className="flex flex-row font-bold">
-            <button onClick={()=>{
+            <button className="font-bold" onClick={()=>{
                 gridsDispatch({type: 'setPlaying', on: !gridsState.playing})
             }
                 }>{gridsState.playing? '[]' : '>'}</button>
-        </div>
     )
 }

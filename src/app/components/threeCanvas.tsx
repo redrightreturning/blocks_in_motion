@@ -3,7 +3,9 @@ import { OrbitControls } from "@react-three/drei";
 import Box from "./box";
 import { Array3D } from "../helpers/array3D";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
-import NoisyBloomPass from "../helpers/noisyBloomPass";
+import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
+
 
 
 export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable : boolean, gridIndex: number, onClick?: () => void}) {
@@ -20,8 +22,8 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
     return (
         <Canvas onClick={onClick} className="bg-canvas-background cursor-pointer" camera={{ position: [5, 5, 5], fov: 50 }}>
             <ambientLight intensity={Math.PI / 2} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+            <spotLight position={[0, 10, 10]} angle={0.5} penumbra={1} decay={0} intensity={1} />
+            <spotLight position={[0, -10, -10]} angle={0.5} penumbra={1} decay={0} intensity={0.8} />
             {
                 grid.map((x, xIndex) => (
                     x.map((y: boolean[], yIndex: number) => (
@@ -37,7 +39,21 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
             
             }
             {editable? <OrbitControls /> : <></>}
-            {gridsState.noiseOn? <NoisyBloomPass /> : <></>}
+            {gridsState.noiseOn? 
+            <EffectComposer>
+                <Noise
+                    premultiply // enables or disables noise premultiplication
+                    blendFunction={BlendFunction.ADD} // blend mode
+                />
+                <Bloom mipmapBlur luminanceThreshold={1} />
+                <Vignette
+    offset={0.5} // vignette offset
+    darkness={0.5} // vignette darkness
+    eskil={false} // Eskil's vignette technique
+    blendFunction={BlendFunction.NORMAL} // blend mode
+  />
+            </EffectComposer>
+            : <></>}
         </Canvas>
     )
 }
