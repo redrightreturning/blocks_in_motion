@@ -11,12 +11,29 @@ export function Playback(){
     }
 
     useEffect(() => {
-        if (gridsState.playing) {
-            const interval = setInterval(() => {
-                gridsDispatch({type: 'setSelected', id: (gridsState.selectedGridIndex + 1) % gridsState.grids.length})
-            }, 1000/FPS);
-            return () => clearInterval(interval);
+        let animationFrameId : number
+        let lastTime = performance.now()
+        const frameDuration = 1000 / FPS
+
+        const animate = (time : number) => {
+            if (gridsState.playing) {
+                const delta = time - lastTime
+                if (delta >= frameDuration) {
+                    gridsDispatch({
+                        type: "setSelected",
+                        id: (gridsState.selectedGridIndex + 1) % gridsState.grids.length,
+                    })
+                    lastTime = time
+                }
+                animationFrameId = requestAnimationFrame(animate)
+            }
         }
+
+        if (gridsState.playing) {
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        return () => cancelAnimationFrame(animationFrameId);
     })
 
     return (
