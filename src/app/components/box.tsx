@@ -4,19 +4,18 @@ import { Mesh } from 'three'
 import * as THREE from 'three'
 import { IndexType } from '../types/indexType.interface'
 import { useGridsDispatch, useGridsState } from '../helpers/gridsContext'
+import { BoxType } from '../types/gridTypes.interface'
 
 //Boxes are:
 //rendered or not
-//clickable or not
-//highlighted or not (depending on slider or 'drill')
-//hovered or not
-//
+//clickable or not and as such hovered or not
+//primary, secondary, or tertiary
 
-export default function Box({position, rendered, index, isClickable} : 
+export default function Box({position, type, index} : 
     {   position: [number, number, number], 
-        rendered : boolean, 
+        type : BoxType, 
         index: IndexType,
-        isClickable: boolean}){
+    }){
     const meshRef = useRef<Mesh>(null)
     const [hovered, setHover] = useState(false)
 
@@ -26,29 +25,25 @@ export default function Box({position, rendered, index, isClickable} :
         throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
     }
 
-    
-    return (
-        isClickable || rendered? 
-        <mesh
-            position={position}
-            ref={meshRef}
-            raycast={isClickable? THREE.Mesh.prototype.raycast : undefined}
-            onClick={(event) => {
-                event.stopPropagation()
-                if(isClickable) gridsDispatch({type: "update", index: index})
-            }}
-            onPointerOver={isClickable? () => setHover(true): undefined}
-            onPointerOut={isClickable? () => setHover(false): undefined}>
-            <boxGeometry args={[1, 1, 1]} />
-            
-            {rendered? 
-            <meshStandardMaterial color={(hovered ? 'hotpink' : 'orange')} />
-            :
-            <meshPhysicalMaterial
+    const boxColor = ()=>{
+        if (hovered){
+            return 'hotpink'
+        }else{
+            return 'orange'
+        }
+    }
+
+    const material = ()=>{
+        if(type.type === "primary"){
+            return (<meshStandardMaterial color={boxColor()} />)
+        }else{
+            const isTypeSecondary = type.type === "secondary"
+
+            return (<meshPhysicalMaterial
                 // core glass properties
                 transmission={1} // make material physically transmissive (glass)
                 transparent={true} // allow alpha
-                opacity={isClickable ? 0.25 : 0} // make material mostly transparent
+                opacity={isTypeSecondary ? 0.5 : 0.25} // make material mostly transparent
                 thickness={0.8} // how much the material absorbs / refracts
                 roughness={0} // smooth, reflective surface
                 metalness={0}
@@ -57,13 +52,32 @@ export default function Box({position, rendered, index, isClickable} :
                 envMapIntensity={1.2}
 
                 // subtle tint and subsurface
-                attenuationColor={(hovered ? 'yellow' : 'lightblue')} // color when light passes through
+                attenuationColor={"white"} // color when light passes through
                 attenuationDistance={0.6} // how far light travels inside
 
                 // clearcoat for a glossy layer on top
                 clearcoat={0.2}
                 clearcoatRoughness={0}
-            />}
+            />)
+        }
+    }
+
+    
+    return (
+        type.rendered || type.clickable? 
+        <mesh
+            position={position}
+            ref={meshRef}
+            raycast={type.clickable? THREE.Mesh.prototype.raycast : undefined}
+            onClick={(event) => {
+                event.stopPropagation()
+                if(type.clickable) gridsDispatch({type: "update", index: index})
+            }}
+            onPointerOver={type.clickable? () => setHover(true): undefined}
+            onPointerOut={type.clickable? () => setHover(false): undefined}>
+            <boxGeometry args={[1, 1, 1]} />
+            {material()}
+            
         </mesh>
         : <></>
     )

@@ -31,7 +31,7 @@ export class Array3D {
         return newArray
     }
 
-    static isClickable(index: IndexType, array3D: Array3DType) : boolean {
+    static isClickableBottomLayer(index: IndexType, array3D: Array3DType) : boolean {
         //A box is not clickable if there is a box directly above it
         if((index.y + 1 < array3D[index.x].length) && array3D[index.x][index.y + 1][index.z]) return false
         //A box is clickable if it is on the bottom layer of the grid

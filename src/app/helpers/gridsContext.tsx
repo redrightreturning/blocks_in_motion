@@ -2,11 +2,13 @@
 import React, { createContext, useContext, useReducer, ReactNode  } from 'react';
 import { Array3D, Array3DType } from './array3D';
 import { IndexType } from '../types/indexType.interface';
+import { GridModeType } from '../types/gridTypes.interface';
 
 const GRID_SIZE = 5
 const GridsContext = createContext<GridsState | undefined>(undefined)
 const GridsDispatchContext = createContext<React.Dispatch<GridsActionType> | undefined>(undefined)
 const firstGrid = [Array3D.newArray(GRID_SIZE, false)]
+
 
 type GridsActionType =
 //Grid actions
@@ -18,6 +20,7 @@ type GridsActionType =
   //Grid settings actions
   | { type: "setSelected"; id: number }
   | { type: "setGridSize"; size: number }
+  | { type: "setGridMode"; gridType: GridModeType }
   | { type: "setOnion"; on: boolean }
   | { type: "setNoise"; on: boolean }
   | { type: "setPlaying"; on: boolean }
@@ -25,6 +28,7 @@ type GridsActionType =
   type GridsState = {
     grids: Array3DType[]
     selectedGridIndex: number
+    mode: GridModeType
     gridSize: number
     noiseOn: boolean
     onionOn: boolean
@@ -39,7 +43,8 @@ export function GridsProvider({ children }: { children: ReactNode }) {
     gridSize: GRID_SIZE,
     noiseOn: false,
     onionOn: false,
-    playing: false
+    playing: false,
+    mode: "bottomUp",
   });
 
   return (
@@ -114,6 +119,9 @@ function gridsReducer(state: GridsState, action: GridsActionType): GridsState {
     case 'setGridSize': {
       //TODO: Resize grids to new size. Currently does nothing
       return { ...state, gridSize: action.size, grids: state.grids, selectedGridIndex: 0 };
+    }
+    case 'setGridMode': {
+      return { ...state, mode: action.gridType };
     }
     case 'setNoise': {
       return { ...state, noiseOn: action.on };

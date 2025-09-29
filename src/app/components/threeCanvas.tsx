@@ -5,6 +5,8 @@ import { Array3D } from "../helpers/array3D";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
+import { BoxType, RenderType } from "../types/gridTypes.interface";
+import { IndexType } from "../types/indexType.interface";
 
 
 
@@ -19,6 +21,24 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
     const gridSize = gridsState.gridSize
     const canEdit = editable && !gridsState.playing
 
+    const boxType = (index: IndexType, value : boolean) : BoxType=>{
+
+        const isClickable = canEdit && Array3D.isClickableBottomLayer(index, grid)
+
+        let type : RenderType
+        if (value){
+            type = "primary"
+        }else if(isClickable){
+            type = "secondary"
+        }else{
+            type = "tertiary"
+        }
+
+        return ({type: type, 
+            rendered: value, 
+            clickable: isClickable})
+    }
+
     return (
         <Canvas onClick={onClick} className="bg-canvas-background cursor-pointer" camera={{ position: [5, 5, 5], fov: 50 }}>
             <ambientLight intensity={Math.PI / 2} />
@@ -31,27 +51,27 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
                             <Box key={`${xIndex}, ${yIndex}, ${zIndex}`} 
                             position={[xIndex - (gridSize / 2), yIndex - (gridSize / 2), zIndex - (gridSize / 2)]}
                             index={{x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}}
-                            rendered={boxValue}
-                            isClickable={canEdit? Array3D.isClickable({x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}, grid) : false}/>
+                            type={boxType({x: xIndex, y: yIndex, z: zIndex, grid: gridIndex}, boxValue)}
+                            />
                         ))
                     ))
                 ))
-            
             }
             {editable? <OrbitControls /> : <></>}
             {gridsState.noiseOn? 
             <EffectComposer>
                 <Noise
-                    premultiply // enables or disables noise premultiplication
-                    blendFunction={BlendFunction.ADD} // blend mode
+                    opacity={0.4}
+                    premultiply
+                    blendFunction={BlendFunction.ADD}
                 />
                 <Bloom mipmapBlur luminanceThreshold={1} />
                 <Vignette
-    offset={0.5} // vignette offset
-    darkness={0.5} // vignette darkness
-    eskil={false} // Eskil's vignette technique
-    blendFunction={BlendFunction.NORMAL} // blend mode
-  />
+                    offset={0.5} // vignette offset
+                    darkness={0.5} // vignette darkness
+                    eskil={false} // Eskil's vignette technique
+                    blendFunction={BlendFunction.NORMAL} // blend mode
+                />
             </EffectComposer>
             : <></>}
         </Canvas>
