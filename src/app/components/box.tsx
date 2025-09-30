@@ -25,7 +25,7 @@ export default function Box({position, type, index} :
         throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
     }
 
-    const boxColor = ()=>{
+    const boxColorPrimary = ()=>{
         if (hovered){
             return 'hotpink'
         }else{
@@ -33,9 +33,17 @@ export default function Box({position, type, index} :
         }
     }
 
+    const boxColorSecondary = ()=>{
+        if (hovered){
+            return 'yellow'
+        }else{
+            return 'white'
+        }
+    }
+
     const material = ()=>{
         if(type.type === "primary"){
-            return (<meshStandardMaterial color={boxColor()} />)
+            return (<meshStandardMaterial color={boxColorPrimary()} />)
         }else{
             const isTypeSecondary = type.type === "secondary"
 
@@ -52,7 +60,7 @@ export default function Box({position, type, index} :
                 envMapIntensity={1.2}
 
                 // subtle tint and subsurface
-                attenuationColor={"white"} // color when light passes through
+                attenuationColor={boxColorSecondary()} // color when light passes through
                 attenuationDistance={0.6} // how far light travels inside
 
                 // clearcoat for a glossy layer on top
@@ -61,24 +69,22 @@ export default function Box({position, type, index} :
             />)
         }
     }
-
     
     return (
-        type.rendered || type.clickable? 
-        <mesh
-            position={position}
-            ref={meshRef}
-            raycast={type.clickable? THREE.Mesh.prototype.raycast : undefined}
-            onClick={(event) => {
-                event.stopPropagation()
-                if(type.clickable) gridsDispatch({type: "update", index: index})
-            }}
-            onPointerOver={type.clickable? () => setHover(true): undefined}
-            onPointerOut={type.clickable? () => setHover(false): undefined}>
-            <boxGeometry args={[1, 1, 1]} />
-            {material()}
-            
-        </mesh>
-        : <></>
+        type.rendered || type.clickable ? (
+            <mesh
+                position={position}
+                ref={meshRef}
+                raycast={type.clickable? THREE.Mesh.prototype.raycast : undefined}
+                onClick={(event) => {
+                    event.stopPropagation()
+                    if(type.clickable) gridsDispatch({type: "update", index: index})
+                }}
+                onPointerOver={type.clickable? () => setHover(true): undefined}
+                onPointerOut={type.clickable? () => setHover(false): undefined}>
+                <boxGeometry args={[1, 1, 1]} />
+                {material()}
+            </mesh>
+        ) : null
     )
 }

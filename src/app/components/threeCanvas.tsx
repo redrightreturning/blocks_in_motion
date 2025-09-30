@@ -3,10 +3,10 @@ import { OrbitControls } from "@react-three/drei";
 import Box from "./box";
 import { Array3D } from "../helpers/array3D";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
-import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
-import { BlendFunction } from "postprocessing";
 import { BoxType, RenderType } from "../types/gridTypes.interface";
 import { IndexType } from "../types/indexType.interface";
+import { NoiseEffect } from "./noiseEffect";
+import { Selection } from "@react-three/postprocessing";
 
 
 
@@ -57,23 +57,8 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
                     ))
                 ))
             }
-            {editable? <OrbitControls /> : <></>}
-            {gridsState.noiseOn? 
-            <EffectComposer>
-                <Noise
-                    opacity={0.4}
-                    premultiply
-                    blendFunction={BlendFunction.ADD}
-                />
-                <Bloom mipmapBlur luminanceThreshold={1} />
-                <Vignette
-                    offset={0.5} // vignette offset
-                    darkness={0.5} // vignette darkness
-                    eskil={false} // Eskil's vignette technique
-                    blendFunction={BlendFunction.NORMAL} // blend mode
-                />
-            </EffectComposer>
-            : <></>}
+            {editable? <OrbitControls /> : null}
+            {gridsState.noiseOn && gridsState.playing? <NoiseEffect/> : null}
         </Canvas>
     )
 }
