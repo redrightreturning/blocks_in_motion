@@ -22,7 +22,7 @@ export default function Box({position, type, index} :
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
     if (!gridsState || !gridsDispatch) {
-        throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
+        throw new Error(`useGridsState and useGridsDispatch must be used within a GridsProvider. State: ${gridsState} Dispatch: ${gridsDispatch}`);
     }
 
     const boxColorPrimary = ()=>{

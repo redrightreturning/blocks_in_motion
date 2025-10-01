@@ -6,7 +6,7 @@ export default function TimelineBox({index}: {index: number}) {
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
     if (!gridsState || !gridsDispatch) {
-        throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
+        throw new Error(`useGridsState and useGridsDispatch must be used within a GridsProvider. State: ${gridsState} Dispatch: ${gridsDispatch}`);
     }
 
     return (

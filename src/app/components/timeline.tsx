@@ -8,7 +8,7 @@ export default function Timeline() {
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
     if (!gridsState || !gridsDispatch) {
-        throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
+        throw new Error(`useGridsState and useGridsDispatch must be used within a GridsProvider. State: ${gridsState} Dispatch: ${gridsDispatch}`);
     }
     
     return(
@@ -18,7 +18,7 @@ export default function Timeline() {
                     <TimelineBox index={index} key={index}/>
                 ))
             }
-            <div className="h-full flex flex-col justify-around items-center">
+            <div className="h-full flex flex-col justify-stretch items-center">
                 <Button onClick={()=>{gridsDispatch({type:"add", id: gridsState.grids.length - 1})}}> + </Button>
             </div>
         </div>

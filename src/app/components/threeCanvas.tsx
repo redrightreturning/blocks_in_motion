@@ -15,7 +15,7 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
     if (!gridsState || !gridsDispatch) {
-        throw new Error("useGridsState and useGridsDispatch must be used within a GridsProvider");
+        throw new Error(`useGridsState and useGridsDispatch must be used within a GridsProvider. State: ${gridsState} Dispatch: ${gridsDispatch}`);
     }
     const grid = gridsState.grids[gridIndex]
     const gridSize = gridsState.gridSize

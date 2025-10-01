@@ -3,14 +3,35 @@ import React, { createContext, useContext, useReducer, ReactNode  } from 'react'
 import { Array3D, Array3DType } from './array3D';
 import { IndexType } from '../types/indexType.interface';
 import { GridModeType } from '../types/gridTypes.interface';
+import { persistReducer } from './saveState';
 
 const GRID_SIZE = 5
-const GridsContext = createContext<GridsState | undefined>(undefined)
+const GridsContext = createContext<GridsStateType | undefined>(undefined)
 const GridsDispatchContext = createContext<React.Dispatch<GridsActionType> | undefined>(undefined)
-const firstGrid = [Array3D.newArray(GRID_SIZE, false)]
+const GRID_STORAGE_KEY = "gridState"
+const emptyGrid = ()=>[Array3D.newArray(GRID_SIZE, false)]
 
+const gridStateInit = (storageKey : string)=>{
+  const defaultState = {
+        grids: emptyGrid(), 
+        selectedGridIndex: 0,
+        gridSize: GRID_SIZE,
+        noiseOn: false,
+        onionOn: false,
+        playing: false,
+        mode: "bottomUp",
+    }
+  try{
+    const existing = localStorage.getItem(storageKey)
+    const newState = existing? JSON.parse(existing) : defaultState
+    return newState
+  }catch (err){
+    console.error("Failed to get init state: ", err);
+    return defaultState
+  }
+}
 
-type GridsActionType =
+export type GridsActionType =
 //Grid actions
   | { type: "add"; id: number }
   | { type: "duplicate"; id: number }
@@ -25,7 +46,7 @@ type GridsActionType =
   | { type: "setNoise"; on: boolean }
   | { type: "setPlaying"; on: boolean }
 
-  type GridsState = {
+  export type GridsStateType = {
     grids: Array3DType[]
     selectedGridIndex: number
     mode: GridModeType
@@ -35,17 +56,17 @@ type GridsActionType =
     playing: boolean
   }
 
+export function useGridsState() {
+  return useContext(GridsContext);
+}
+
+export function useGridsDispatch() {
+  return useContext(GridsDispatchContext);
+}
+
 export function GridsProvider({ children }: { children: ReactNode }) {
   
-  const [state, dispatch] = useReducer(gridsReducer, {
-    grids: firstGrid, 
-    selectedGridIndex: 0,
-    gridSize: GRID_SIZE,
-    noiseOn: false,
-    onionOn: false,
-    playing: false,
-    mode: "bottomUp",
-  });
+  const [state, dispatch] = useReducer(persistReducer(gridsReducer, GRID_STORAGE_KEY), gridStateInit(GRID_STORAGE_KEY));
 
   return (
     <GridsContext.Provider value={state}>
@@ -56,15 +77,8 @@ export function GridsProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useGridsState() {
-  return useContext(GridsContext);
-}
 
-export function useGridsDispatch() {
-  return useContext(GridsDispatchContext);
-}
-
-function gridsReducer(state: GridsState, action: GridsActionType): GridsState {
+function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStateType {
   switch (action.type) {
     case 'add': {
 
@@ -108,7 +122,7 @@ function gridsReducer(state: GridsState, action: GridsActionType): GridsState {
     case 'reset': {
       return {
         ...state,
-        grids: firstGrid, 
+        grids: emptyGrid(), 
         selectedGridIndex: 0, 
         gridSize: GRID_SIZE,
       };
