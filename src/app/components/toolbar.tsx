@@ -1,10 +1,15 @@
-import { ArrowDownOnSquareIcon } from "@heroicons/react/24/solid";
+'use client'
+import { useState } from "react";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
-import Button from "./button";
+import Button from "./ui/button";
+import { Icon } from "./ui/icon";
 import { Playback } from "./playback";
+import { PopUp } from "./popup";
+import { ProjectSettings } from "./projectSettings";
 
 export default function Toolbar() {
 
+    const [showSettings, setShowSettings] = useState(false)
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
     if (!gridsState || !gridsDispatch) {
@@ -17,22 +22,19 @@ export default function Toolbar() {
             <Button onClick={()=>{
                 gridsDispatch({type:'render'})
             }}>
-                <ArrowDownOnSquareIcon className="w-5 h-5"/>
+                <Icon type="download" />
             </Button>
-            <span className="flex flex-row justify-center items-center gap-1">
-                <label htmlFor="noise" className="pr-1 text-white">Noise?</label>
-                <input type="checkbox" id="noise"
-                    checked={gridsState.noiseOn}
-                    onChange={()=>gridsDispatch({type: 'setNoise', on: !gridsState.noiseOn})}
-                />
-            </span>
-            <span className="flex flex-row justify-center items-center gap-1">
-                <label htmlFor="onion" className="pr-1 text-white">Onion?</label>
-                <input type="checkbox" id="onion"
-                    checked={gridsState.onionOn}
-                    onChange={()=>gridsDispatch({type: 'setOnion', on: !gridsState.onionOn})}
-                />
-            </span>
+            <Button onClick={()=>{
+                setShowSettings(true)
+            }}>
+                <Icon type="settings"/>
+            </Button>
+
+            {showSettings && <PopUp title="Project Settings" onClose={()=>{
+                    setShowSettings(false)
+                }}>
+                    <ProjectSettings/>
+                </PopUp>}
         </div>
     )
 }

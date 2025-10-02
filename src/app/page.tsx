@@ -1,4 +1,5 @@
 'use client'
+import { PopUp } from "./components/popup";
 import ThreeCanvas from "./components/threeCanvas";
 import Timeline from "./components/timeline";
 import Toolbar from "./components/toolbar";

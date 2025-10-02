@@ -1,5 +1,5 @@
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
-import Button from "./button";
+import Button from "./ui/button";
 import ThreeCanvas from "./threeCanvas";
 import TimelineBox from "./timelineBox";
 

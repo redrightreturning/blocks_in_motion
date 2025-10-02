@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
-import Button from "./button";
-import { BackwardIcon, ForwardIcon, PlayIcon, StopIcon } from "@heroicons/react/24/solid";
+import Button from "./ui/button";
+import { Icon } from "./ui/icon";
 
 export function Playback(){
 
@@ -44,16 +44,14 @@ export function Playback(){
                 <Button onClick={()=>{
                     gridsDispatch({type: 'setBackward'})
                 }}>
-                    <div className="w-5 h-5">
-                        <BackwardIcon/>
-                    </div>
+                    <Icon type="backward"/>
                 </Button>
 
                 <Button onClick={()=>{
                     gridsDispatch({type: 'setPlaying', on: !gridsState.playing})
                 }}>
                     <div className="w-5 h-5">
-                        {gridsState.playing? <StopIcon/> : <PlayIcon/>}
+                        {gridsState.playing? <Icon type="stop"/> : <Icon type="play"/>}
                     </div>
                 </Button>
 
@@ -61,7 +59,7 @@ export function Playback(){
                     gridsDispatch({type: 'setForward'})
                 }}>
                     <div className="w-5 h-5">
-                        <ForwardIcon/>
+                        <Icon type="forward"/>
                     </div>
                 </Button>
             </div>
