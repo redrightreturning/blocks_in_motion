@@ -6,11 +6,10 @@ import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import { BoxType, RenderType } from "../types/gridTypes.interface";
 import { IndexType } from "../types/indexType.interface";
 import { NoiseEffect } from "./noiseEffect";
-import { Selection } from "@react-three/postprocessing";
 
 
 
-export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable : boolean, gridIndex: number, onClick?: () => void}) {
+export default function ThreeCanvas({ editable, gridIndex, onClick, children} : { editable : boolean, gridIndex: number, onClick?: () => void, children? : React.ReactNode}) {
 
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
@@ -59,6 +58,7 @@ export default function ThreeCanvas({ editable, gridIndex, onClick} : { editable
             }
             {editable? <OrbitControls /> : null}
             {gridsState.noiseOn && gridsState.playing? <NoiseEffect/> : null}
+            {children}
         </Canvas>
     )
 }

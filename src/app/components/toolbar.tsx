@@ -1,4 +1,6 @@
+import { ArrowDownOnSquareIcon } from "@heroicons/react/24/solid";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
+import Button from "./button";
 import { Playback } from "./playback";
 
 export default function Toolbar() {
@@ -10,8 +12,13 @@ export default function Toolbar() {
     }
 
     return (
-        <div className="w-full my-2 flex flex-row justify-start items-center gap-4">
+        <div className="w-full my-2 flex flex-row justify-center items-center gap-4">
             <Playback/>
+            <Button onClick={()=>{
+                gridsDispatch({type:'render'})
+            }}>
+                <ArrowDownOnSquareIcon className="w-5 h-5"/>
+            </Button>
             <span>
                 <label htmlFor="noise" className="pr-1 text-white">Noise?</label>
                 <input type="checkbox" id="noise"

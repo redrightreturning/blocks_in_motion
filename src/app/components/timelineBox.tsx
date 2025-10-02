@@ -20,7 +20,7 @@ export default function TimelineBox({index}: {index: number}) {
                 </div>
             </div>
             
-            <ThreeCanvas editable={false} gridIndex={index} onClick={()=>{gridsDispatch({type: 'setSelected', id: index})}}/>
+            <ThreeCanvas editable={false} gridIndex={index} onClick={()=>{gridsDispatch({type: 'setSelected', id: index})}}></ThreeCanvas>
         </div>
     )
 }
