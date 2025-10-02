@@ -1,5 +1,7 @@
 import React, { useEffect } from "react"
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
+import Button from "./button";
+import { BackwardIcon, ForwardIcon, PlayIcon, StopIcon } from "@heroicons/react/24/solid";
 
 export function Playback(){
 
@@ -37,9 +39,31 @@ export function Playback(){
     })
 
     return (
-            <button className="font-bold" onClick={()=>{
-                gridsDispatch({type: 'setPlaying', on: !gridsState.playing})
-            }
-                }>{gridsState.playing? '[]' : '>'}</button>
+
+            <div className="flex flex-row gap-4 justify-stretch items-stretch">
+                <Button onClick={()=>{
+                    gridsDispatch({type: 'setBackward'})
+                }}>
+                    <div className="w-5 h-5">
+                        <BackwardIcon/>
+                    </div>
+                </Button>
+
+                <Button onClick={()=>{
+                    gridsDispatch({type: 'setPlaying', on: !gridsState.playing})
+                }}>
+                    <div className="w-5 h-5">
+                        {gridsState.playing? <StopIcon/> : <PlayIcon/>}
+                    </div>
+                </Button>
+
+                <Button onClick={()=>{
+                    gridsDispatch({type: 'setForward'})
+                }}>
+                    <div className="w-5 h-5">
+                        <ForwardIcon/>
+                    </div>
+                </Button>
+            </div>
     )
 }

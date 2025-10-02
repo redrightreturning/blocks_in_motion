@@ -8,7 +8,7 @@ export function persistReducer(
     const newState = reducer(state, action)
 
     try {
-      localStorage.setItem(storageKey, JSON.stringify(newState))
+      localStorage.setItem(storageKey, JSON.stringify(newState ?? {}))
     } catch (err) {
       console.error("Failed to persist state", err)
     }

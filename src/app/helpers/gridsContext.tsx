@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useReducer, ReactNode  } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect  } from 'react';
 import { Array3D, Array3DType } from './array3D';
 import { IndexType } from '../types/indexType.interface';
 import { GridModeType } from '../types/gridTypes.interface';
@@ -10,29 +10,19 @@ const GridsContext = createContext<GridsStateType | undefined>(undefined)
 const GridsDispatchContext = createContext<React.Dispatch<GridsActionType> | undefined>(undefined)
 const GRID_STORAGE_KEY = "gridState"
 const emptyGrid = ()=>[Array3D.newArray(GRID_SIZE, false)]
-
-const gridStateInit = (storageKey : string)=>{
-  const defaultState = {
-        grids: emptyGrid(), 
-        selectedGridIndex: 0,
-        gridSize: GRID_SIZE,
-        noiseOn: false,
-        onionOn: false,
-        playing: false,
-        mode: "bottomUp",
-    }
-  try{
-    const existing = localStorage.getItem(storageKey)
-    const newState = existing? JSON.parse(existing) : defaultState
-    return newState
-  }catch (err){
-    console.error("Failed to get init state: ", err);
-    return defaultState
+const defaultState : GridsStateType= {
+      grids: emptyGrid(), 
+      selectedGridIndex: 0,
+      mode: "bottomUp",
+      gridSize: GRID_SIZE,
+      noiseOn: false,
+      onionOn: false,
+      playing: false,
   }
-}
 
 export type GridsActionType =
-//Grid actions
+  //Grid actions
+  | { type: "setGridState"; state : GridsStateType}
   | { type: "add"; id: number }
   | { type: "duplicate"; id: number }
   | { type: "update"; index: IndexType}
@@ -40,21 +30,23 @@ export type GridsActionType =
   | { type: "reset"}
   //Grid settings actions
   | { type: "setSelected"; id: number }
+  | { type: "setForward"}
+  | { type: "setBackward"}
   | { type: "setGridSize"; size: number }
   | { type: "setGridMode"; gridType: GridModeType }
   | { type: "setOnion"; on: boolean }
   | { type: "setNoise"; on: boolean }
   | { type: "setPlaying"; on: boolean }
 
-  export type GridsStateType = {
-    grids: Array3DType[]
-    selectedGridIndex: number
-    mode: GridModeType
-    gridSize: number
-    noiseOn: boolean
-    onionOn: boolean
-    playing: boolean
-  }
+export type GridsStateType = {
+  grids: Array3DType[]
+  selectedGridIndex: number
+  mode: GridModeType
+  gridSize: number
+  noiseOn: boolean
+  onionOn: boolean
+  playing: boolean
+}
 
 export function useGridsState() {
   return useContext(GridsContext);
@@ -66,7 +58,24 @@ export function useGridsDispatch() {
 
 export function GridsProvider({ children }: { children: ReactNode }) {
   
-  const [state, dispatch] = useReducer(persistReducer(gridsReducer, GRID_STORAGE_KEY), gridStateInit(GRID_STORAGE_KEY));
+  const [state, dispatch] = useReducer(persistReducer(gridsReducer, GRID_STORAGE_KEY), defaultState);
+  // On mount, update state from localStorage if available (client-side only)
+  useEffect(() => {
+    try{
+      const existing = localStorage.getItem(GRID_STORAGE_KEY)
+      if(existing !== null){
+        const newState = JSON.parse(existing)
+        if(newState === undefined){
+          throw("Why is newState undefined?!")
+          return
+        }
+        dispatch({type: "setGridState", state: newState}) 
+      }
+    }catch (err){
+      console.error("Failed to get init state: ", err); 
+    }
+  }, [])
+
 
   return (
     <GridsContext.Provider value={state}>
@@ -80,6 +89,9 @@ export function GridsProvider({ children }: { children: ReactNode }) {
 
 function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStateType {
   switch (action.type) {
+    case 'setGridState':{
+      return action.state
+    }
     case 'add': {
 
       const index = action.id !== undefined? action.id + 1: state.grids.length-1
@@ -128,7 +140,29 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
       };
     }
     case 'setSelected': {
-      return { ...state, selectedGridIndex: action.id, gridSize: state.gridSize };
+      return { ...state, selectedGridIndex: action.id};
+    }
+    //When going backwards, timeline should loop to back
+    case 'setBackward': {
+      const currentIndex = state.selectedGridIndex
+      let index : number
+      if(currentIndex - 1 < 0){
+        index = state.grids.length - 1
+      }else{
+        index = currentIndex - 1
+      }
+      return { ...state, selectedGridIndex: index}
+    }
+    //When going backwards, timeline should loop to front
+    case 'setForward': {
+      const currentIndex = state.selectedGridIndex
+      let index : number
+      if(currentIndex + 1 > state.grids.length - 1){
+        index = 0
+      }else{
+        index = currentIndex + 1
+      }
+      return { ...state, selectedGridIndex: index}
     }
     case 'setGridSize': {
       //TODO: Resize grids to new size. Currently does nothing

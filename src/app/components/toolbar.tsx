@@ -10,7 +10,7 @@ export default function Toolbar() {
     }
 
     return (
-        <div className="w-full flex flex-row justify-center items-center gap-4">
+        <div className="w-full my-2 flex flex-row justify-start items-center gap-4">
             <Playback/>
             <span>
                 <label htmlFor="noise" className="pr-1 text-white">Noise?</label>
