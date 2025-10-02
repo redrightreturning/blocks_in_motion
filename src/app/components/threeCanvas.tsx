@@ -23,10 +23,15 @@ export default function ThreeCanvas({ editable, gridIndex, onClick, children} : 
     const boxType = (index: IndexType, value : boolean) : BoxType=>{
 
         const isClickable = canEdit && Array3D.isClickableBottomLayer(index, grid)
+        
+        const isOnion = (gridIndex > 0)? gridsState.grids[gridIndex - 1][index.x][index.y][index.z] 
+                        : false
 
         let type : RenderType
         if (value){
             type = "primary"
+        }else if(isOnion && gridsState.onionOn){
+            type = "primaryOnion"
         }else if(isClickable){
             type = "secondary"
         }else{

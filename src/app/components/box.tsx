@@ -33,12 +33,22 @@ export default function Box({position, type, index} :
         }
     }
 
-    const boxColorSecondary = ()=>{
-        if (hovered){
-            return 'yellow'
+    const boxColorOther = ()=>{
+        if(type.type === "primaryOnion"){
+            if (hovered){
+                return 'hotpink'
+            }else{
+                return 'lightgreen'
+            }
         }else{
-            return 'white'
+            if (hovered){
+                return 'yellow'
+            }else{
+                return 'white'
+            }
         }
+        
+        
     }
 
     const material = ()=>{
@@ -46,12 +56,13 @@ export default function Box({position, type, index} :
             return (<meshStandardMaterial color={boxColorPrimary()} />)
         }else{
             const isTypeSecondary = type.type === "secondary"
+            const isTypePrimaryOnion = type.type === "primaryOnion"
 
             return (<meshPhysicalMaterial
                 // core glass properties
                 transmission={1} // make material physically transmissive (glass)
                 transparent={true} // allow alpha
-                opacity={isTypeSecondary ? 0.5 : 0.25} // make material mostly transparent
+                opacity={isTypeSecondary || isTypePrimaryOnion? 0.5 : 0.25} // make material mostly transparent
                 thickness={0.8} // how much the material absorbs / refracts
                 roughness={0} // smooth, reflective surface
                 metalness={0}
@@ -60,7 +71,7 @@ export default function Box({position, type, index} :
                 envMapIntensity={1.2}
 
                 // subtle tint and subsurface
-                attenuationColor={boxColorSecondary()} // color when light passes through
+                attenuationColor={boxColorOther()} // color when light passes through
                 attenuationDistance={0.6} // how far light travels inside
 
                 // clearcoat for a glossy layer on top

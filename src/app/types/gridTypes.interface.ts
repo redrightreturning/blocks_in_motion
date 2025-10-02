@@ -1,6 +1,6 @@
 export type GridModeType = "bottomUp" | "slice"
 
-export type RenderType = "primary" | "secondary" | "tertiary"
+export type RenderType = "primary" | "primaryOnion" | "secondary" | "tertiary"
 
 //Clickable indicates if box will respond to hover and nothing else
 export interface BoxType {
