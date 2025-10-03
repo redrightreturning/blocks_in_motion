@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import Button from "./ui/button";
-import { Icon } from "./ui/icon";
+import Icon from "./ui/icon";
 import { Playback } from "./playback";
 import { PopUp } from "./popup";
 import { ProjectSettings } from "./projectSettings";

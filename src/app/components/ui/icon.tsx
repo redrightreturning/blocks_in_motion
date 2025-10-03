@@ -9,7 +9,7 @@ export type IconType =
 "download" | 
 "x"
 
-export function Icon({type} : {type : IconType}){
+export default function Icon({type} : {type : IconType}){
 
     const className = "w-5 h-5"
 

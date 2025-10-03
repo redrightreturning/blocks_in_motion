@@ -1,4 +1,5 @@
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
+import Button from "./ui/button";
 
 export function ProjectSettings(){
 
@@ -24,6 +25,7 @@ export function ProjectSettings(){
                     onChange={()=>gridsDispatch({type: 'setOnion', on: !gridsState.onionOn})}
                 />
             </span>
+            <Button onClick={()=>{gridsDispatch({type:"reset"})}}>Reset</Button>
         </div>
     )
 }

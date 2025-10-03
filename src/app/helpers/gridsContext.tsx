@@ -139,8 +139,7 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
       return {
         ...state,
         grids: emptyGrid(), 
-        selectedGridIndex: 0, 
-        gridSize: GRID_SIZE,
+        selectedGridIndex: 0,
       };
     }
     case 'setSelected': {
