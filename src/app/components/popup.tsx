@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Icon from "./ui/icon";
+import Icon from "./ui/uiIcon";
 
 export function PopUp({title, onClose, children} : {title? : string, onClose : ()=>void, children : ReactNode}){
 
