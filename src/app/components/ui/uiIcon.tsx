@@ -1,4 +1,4 @@
-import { ArrowDownOnSquareIcon, Cog6ToothIcon, BackwardIcon, ForwardIcon, PlayIcon, StopIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { ArrowDownOnSquareIcon, Cog6ToothIcon, BackwardIcon, ForwardIcon, PlayIcon, StopIcon, XMarkIcon, ArrowLeftCircleIcon, ArrowRightCircleIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 
 export type IconType = 
 "settings" |
@@ -7,7 +7,10 @@ export type IconType =
 "forward" |
 "backward" | 
 "download" | 
-"x"
+"x" |
+"left" |
+"right" | 
+"help"
 
 export default function Icon({type} : {type : IconType}){
 
@@ -21,5 +24,8 @@ export default function Icon({type} : {type : IconType}){
         case "backward": return <BackwardIcon className={className}/>
         case "download": return <ArrowDownOnSquareIcon className={className}/>
         case "x": return <XMarkIcon className={className}/>
+        case "left": return <ArrowLeftCircleIcon className={className}/>
+        case "right" : return <ArrowRightCircleIcon className={className}/>
+        case "help" : return <QuestionMarkCircleIcon className={className}/>
     }
 }

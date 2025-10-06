@@ -6,10 +6,13 @@ import Icon from "./ui/uiIcon";
 import { Playback } from "./playback";
 import { PopUp } from "./popup";
 import { ProjectSettings } from "./projectSettings";
+import { Pagination } from "./pagination";
+import { HelpPageOne, HelpPageTwo } from "./helpPages";
 
 export default function Toolbar() {
 
     const [showSettings, setShowSettings] = useState(false)
+    const [showHelp, setShowHelp] = useState(false)
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
     if (!gridsState || !gridsDispatch) {
@@ -19,21 +22,40 @@ export default function Toolbar() {
     return (
         <div className="w-full my-2 flex flex-row justify-center items-center gap-4">
             <Playback/>
+
             <Button onClick={()=>{
                 gridsDispatch({type:'render'})
             }}>
                 <Icon type="download" />
             </Button>
+
             <Button onClick={()=>{
                 setShowSettings(true)
             }}>
                 <Icon type="settings"/>
             </Button>
 
-            {showSettings && <PopUp title="Project Settings" onClose={()=>{
+            <Button onClick={()=>{
+                setShowHelp(true)
+            }}>
+                <Icon type="help"/>
+            </Button>
+
+            {showSettings && <PopUp title="Project Settings" showCancel={true}  clickBgToClose={true}  onClose={()=>{
                     setShowSettings(false)
                 }}>
                     <ProjectSettings/>
+                </PopUp>}
+
+            {showHelp && <PopUp showCancel={false} clickBgToClose={true} onClose={()=>{
+                    setShowHelp(false)
+                }}>
+                    <Pagination pages={[
+                        {buttonLabel : "Next", node: <HelpPageOne/>},
+                        {buttonLabel : "Done", node: <HelpPageTwo/>}
+                    ]} closeHandler={()=>{
+                        setShowHelp(false)
+                    }}/>
                 </PopUp>}
         </div>
     )

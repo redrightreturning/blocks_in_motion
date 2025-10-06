@@ -15,7 +15,6 @@ export function Renderer({callbackFn} : {callbackFn : RenderCallbackType}) {
     const { gl, scene, camera } = useThree(); // gl is the THREE.WebGLRenderer
 
     const renderFn = ()=>{
-        
         const newRenderer = new THREE.WebGLRenderer()
         // Render a frame manually
 
@@ -26,8 +25,6 @@ export function Renderer({callbackFn} : {callbackFn : RenderCallbackType}) {
 
         // Capture as image
         const dataURL = newRenderer.domElement.toDataURL('image/png')
-        //TEMP: For debuging
-        console.log(dataURL)
 
         callbackFn(dataURL)
     }
