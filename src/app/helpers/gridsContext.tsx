@@ -4,7 +4,6 @@ import { Array3D, Array3DType } from './array3D';
 import { IndexType } from '../types/indexType.interface';
 import { GridModeType } from '../types/gridTypes.interface';
 import { persistReducer } from './saveState';
-import { CallbackRegistry, CallbackType } from './callbackRegistry';
 
 const GRID_SIZE = 5
 const GridsContext = createContext<GridsStateType | undefined>(undefined)
@@ -19,8 +18,8 @@ const defaultState : GridsStateType= {
       noiseOn: false,
       onionOn: false,
       playing: false,
+      render: 0
   }
-  const renderRegistry = new CallbackRegistry("RenderRegistry")
 
 export type GridsActionType =
   //Grid actions
@@ -31,7 +30,6 @@ export type GridsActionType =
   | { type: "remove"; id: number }
   | { type: "reset"}
   | { type: "render"}
-  | { type: "addToRenderRegistry"; fn : CallbackType}
   //Grid settings actions
   | { type: "setSelected"; id: number }
   | { type: "setForward"}
@@ -50,6 +48,7 @@ export type GridsStateType = {
   noiseOn: boolean
   onionOn: boolean
   playing: boolean
+  render: number // A number that is incremented on every render to trigger render canvases
 }
 
 export function useGridsState() {
@@ -73,6 +72,8 @@ export function GridsProvider({ children }: { children: ReactNode }) {
           throw("Why is newState undefined?!")
           return
         }
+        //Reset render count
+        newState.render = 0
         dispatch({type: "setGridState", state: newState}) 
       }
     }catch (err){
@@ -168,12 +169,7 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
       return { ...state, selectedGridIndex: index}
     }
     case 'render':{
-      renderRegistry.trigger()
-      return {...state}
-    }
-    case 'addToRenderRegistry':{
-      renderRegistry.subscribe(action.fn)
-      return {...state}
+      return {...state, render: state.render+1}
     }
     case 'setGridSize': {
       //TODO: Resize grids to new size. Currently does nothing
