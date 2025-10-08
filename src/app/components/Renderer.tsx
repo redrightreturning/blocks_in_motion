@@ -29,56 +29,62 @@ export function Renderer({exportCallback} : {exportCallback : ExportCallbackType
   if (!gridsState || !gridsDispatch) {
       throw new Error(`useGridsState and useGridsDispatch must be used within a GridsProvider. State: ${gridsState} Dispatch: ${gridsDispatch}`);
   }
-
-  const [renderIndex, setRenderIndex] = useState<number | null>(0)
+  const newGif = ()=>{
+    return new GIF({
+      workers: 2,
+      quality: 10,
+      workerScript: '/gif.worker.js',
+      transparent: 0x000000
+    })
+  }
+  const [frames, setFrames] = useState<HTMLCanvasElement[]>([])
   const [rendering, setRendering] = useState(false)
+  const gifRef = useRef<typeof GIF | null>(null);
+  if (!gifRef.current) {
+    gifRef.current = newGif()
+  }
+  
+
   useEffect(() => {
     // Don’t render on first load
     if (gridsState.render > 0 && gridsState.grids.length > 0) {
-      setRenderIndex(0)
       setRendering(true)
     }
   }, [gridsState.render])
 
   useEffect(() => {
-    if (!rendering && renderIndex !== null) {
-      if (renderIndex + 1 < gridsState.grids.length) {
-        setRenderIndex(renderIndex + 1)
+    if (!rendering && frames.length !== 0) {
+      if (frames.length < gridsState.grids.length) {
         setRendering(true)
       } else {
         // Don’t render on first load
         if (gridsState.render > 0){
           console.log("Rendering")
-          setRenderIndex(null) // all done
-          gifRef.current.on('finished', (blob: Blob)=> {
-            console.log("Done")
-            //window.open(URL.createObjectURL(blob))
-            downloadDataURL(URL.createObjectURL(blob), "test.gif")
-          })
-          gifRef.current.render();
+          const addFrames = async () => {
+            for (const canvas of frames) {
+              gifRef.current?.addFrame(canvas, { delay: 100 })
+            }
+            gifRef.current?.on('finished', (blob: Blob) => {
+              downloadDataURL(URL.createObjectURL(blob), "test.gif")
+              setFrames([]) // all done
+              gifRef.current = newGif()
+            })
+            gifRef.current?.render()
+          }
+          addFrames()
         }
       }
     }
-  }, [rendering, renderIndex])
-
-
- const gifRef = useRef<typeof GIF | null>(null);
-  if (!gifRef.current) {
-    gifRef.current = new GIF({
-    width: 500,
-    height: 500,
-    workers: 2,
-    quality: 10,
-    workerScript: '/gif.worker.js',
-  })
-}
+  }, [rendering, frames])
 
   const render = (gl : THREE.WebGLRenderer, scene : THREE.Scene, camera : THREE.Camera, size: Size)=>{
-    const SCALE = 2
-    const SAMPLES = 4
+    const SCALE = 0.5
+    const SAMPLES = 1
     const pixelRatio = gl.getPixelRatio()
-    const width = Math.floor(size.width * pixelRatio) * SCALE
-    const height = Math.floor(size.height * pixelRatio) * SCALE
+    const width = Math.floor(size.width * pixelRatio * SCALE)
+    const height = Math.floor(size.height * pixelRatio * SCALE)
+    gifRef.current.width = width
+    gifRef.current.height = height
 
     // Create an offscreen render target
     const renderTarget = new THREE.WebGLRenderTarget(width, height,{
@@ -122,9 +128,10 @@ export function Renderer({exportCallback} : {exportCallback : ExportCallbackType
     const imageData = new ImageData(flipped, width, height)
     ctx.putImageData(imageData, 0, 0)
 
-    // const dataURL = canvas.toDataURL('image/png')
+    //const dataURL = canvas.toDataURL('image/png')
     // exportCallback(dataURL)
-    gifRef.current.addFrame(canvas)
+    //gifRef.current.addFrame(canvas)
+    setFrames(prev => [...prev, canvas])
     console.log("Frame added")
 
     // Restore renderer target
@@ -137,8 +144,8 @@ export function Renderer({exportCallback} : {exportCallback : ExportCallbackType
   return (
     <div className='w-0 h-0 overflow-hidden relative'>
       <div className='invisible absolute w-screen h-screen'>
-        {renderIndex !==null?  
-          <ThreeCanvas editable={true} gridIndex={renderIndex}>
+        {rendering?  
+          <ThreeCanvas editable={false} gridIndex={frames.length}>
             <CanvasRenderer onRender={render} rendering={rendering} />
           </ThreeCanvas> : null
         }
