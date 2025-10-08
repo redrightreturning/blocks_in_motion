@@ -6,14 +6,8 @@ import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import { BoxType, RenderType } from "../types/gridTypes.interface";
 import { IndexType } from "../types/indexType.interface";
 import { NoiseEffect } from "./noiseEffect";
-import { useEffect } from "react";
-import { CanvasRenderer, RenderCallbackType } from "./Renderer";
 
-
-//Grid index would only ever be null for the render function
-export default function ThreeCanvas({ editable, gridIndex, onClick, children, onRender} : { editable : boolean, gridIndex: number | null, onClick?: () => void, children? : React.ReactNode, onRender? : ()=>void}) {
-
-    if(gridIndex === null) return
+export default function ThreeCanvas({ editable, gridIndex, onClick, children} : { editable : boolean, gridIndex: number, onClick?: () => void, children? : React.ReactNode}) {
 
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
@@ -48,8 +42,7 @@ export default function ThreeCanvas({ editable, gridIndex, onClick, children, on
     }
 
     return (
-        //Don't display for only render canvas ie onRender is defined
-        <Canvas onClick={onClick} className={`bg-canvas-background cursor-pointer ${(onRender === undefined)? "" : "hidden"}`} camera={{ position: [5, 5, 5], fov: 50 }}>
+        <Canvas onClick={onClick} className="bg-canvas-background cursor-pointer" camera={{ position: [5, 5, 5], fov: 50 }}>
             <ambientLight intensity={Math.PI / 2} />
             <spotLight position={[0, 10, 10]} angle={0.5} penumbra={1} decay={0} intensity={1} />
             <spotLight position={[0, -10, -10]} angle={0.5} penumbra={1} decay={0} intensity={0.8} />
@@ -69,7 +62,6 @@ export default function ThreeCanvas({ editable, gridIndex, onClick, children, on
             {editable? <OrbitControls /> : null}
             {gridsState.noiseOn && gridsState.playing? <NoiseEffect/> : null}
             {children}
-            {/* {onRender? (<CanvasRenderer gridIndex={gridIndex} onRender={onRender}/>) : null} */}
         </Canvas>
     )
 }

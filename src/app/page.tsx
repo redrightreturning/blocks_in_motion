@@ -2,7 +2,7 @@
 import ThreeCanvas from "./components/threeCanvas";
 import Timeline from "./components/timeline";
 import Toolbar from "./components/toolbar";
-import { downloadDataURL, Renderer } from "./components/Renderer";
+import { downloadDataURL, Renderer } from "./components/renderer";
 import { useGridsDispatch, useGridsState } from "./helpers/gridsContext";
 
 export default function Home() {
@@ -20,11 +20,10 @@ export default function Home() {
       </header>
       <div className="mx-10 w-full sm:w-1/2 h-screen flex flex-col justify-center items-center">
         <div className="w-full h-1/2 border-4 border-black rounded-lg overflow-hidden">
-          <ThreeCanvas editable={true} gridIndex={gridsState.selectedGridIndex}>
-            <Renderer exportCallback={(dataURL)=>{
-              downloadDataURL(dataURL, "BoxesInMotion.png")
-            }}/>
-          </ThreeCanvas>
+          <ThreeCanvas editable={true} gridIndex={gridsState.selectedGridIndex}/>
+          <Renderer exportCallback={(dataURL)=>{
+            downloadDataURL(dataURL, "BoxesInMotion.png")
+          }}/>
         </div>
         <Toolbar/>
         <Timeline/>
