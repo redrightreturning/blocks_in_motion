@@ -20,26 +20,32 @@ export default function Toolbar() {
     }
 
     return (
-        <div className="w-full my-2 flex flex-row justify-center items-center gap-4">
+        <div className="w-full my-2 flex flex-wrap sm:flex-row justify-center items-center gap-4">
             <Playback/>
 
-            <Button onClick={()=>{
-                gridsDispatch({type:'render'})
-            }}>
-                <Icon type="download" />
-            </Button>
+            <div className="h-auto">
+                <Button onClick={()=>{
+                    gridsDispatch({type:'render'})
+                }}>
+                    <Icon type="download" />
+                </Button>
+            </div>
 
-            <Button onClick={()=>{
-                setShowSettings(true)
-            }}>
-                <Icon type="settings"/>
-            </Button>
+            <div className="h-auto">
+                <Button onClick={()=>{
+                    setShowSettings(true)
+                }}>
+                    <Icon type="settings"/>
+                </Button>
+            </div>
 
-            <Button onClick={()=>{
-                setShowHelp(true)
-            }}>
-                <Icon type="help"/>
-            </Button>
+            <div className="h-auto">
+                <Button onClick={()=>{
+                    setShowHelp(true)
+                }}>
+                    <Icon type="help"/>
+                </Button>
+            </div>
 
             {showSettings && <PopUp title="Project Settings" showCancel={true}  clickBgToClose={true}  onClose={()=>{
                     setShowSettings(false)

@@ -18,7 +18,7 @@ export default function Home() {
       <header className="flex flex-row justify-start items-center w-full pl-5 pt-5">
         <h1>Boxes in Motion</h1>
       </header>
-      <div className="mx-10 w-full sm:w-1/2 h-screen flex flex-col justify-center items-center">
+      <div className="mx-10 w-full px-2 sm:px-0 sm:w-3/4 md:w-1/2 h-screen flex flex-col justify-center items-center">
         <div className="w-full h-1/2 border-4 border-black rounded-lg overflow-hidden">
           <ThreeCanvas editable={true} gridIndex={gridsState.selectedGridIndex}/>
           <Renderer exportCallback={(dataURL)=>{
