@@ -12,13 +12,13 @@ const GRID_STORAGE_KEY = "gridState"
 const emptyGrid = ()=>[Array3D.newArray(GRID_SIZE, false)]
 const defaultState : GridsStateType= {
       grids: emptyGrid(), 
+      gridImages: [],
       selectedGridIndex: 0,
       mode: "bottomUp",
       gridSize: GRID_SIZE,
       noiseOn: false,
       onionOn: false,
-      playing: false,
-      render: 0
+      playing: false
   }
 
 export type GridsActionType =
@@ -29,7 +29,7 @@ export type GridsActionType =
   | { type: "update"; index: IndexType}
   | { type: "remove"; id: number }
   | { type: "reset"}
-  | { type: "render"}
+  | { type: "setGridImage"; id: number; imageString: string}
   //Grid settings actions
   | { type: "setSelected"; id: number }
   | { type: "setForward"}
@@ -42,13 +42,13 @@ export type GridsActionType =
 
 export type GridsStateType = {
   grids: Array3DType[]
+  gridImages: string[] // Data URLs of grid images for timeline
   selectedGridIndex: number
   mode: GridModeType
   gridSize: number
   noiseOn: boolean
   onionOn: boolean
   playing: boolean
-  render: number // A number that is incremented on every render to trigger render canvases
 }
 
 export function useGridsState() {
@@ -134,6 +134,7 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
           state.selectedGridIndex >= state.grids.length - 1
             ? state.selectedGridIndex - 1
             : state.selectedGridIndex,
+        gridImages: state.gridImages.filter((_, i) => i !== action.id)
       };
     }
     case 'reset': {
@@ -168,8 +169,14 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
       }
       return { ...state, selectedGridIndex: index}
     }
-    case 'render':{
-      return {...state, render: state.render+1}
+    case 'setGridImage': {
+      const { id, imageString } = action
+      //Update image or add to end if new
+      const images = 
+        (id >= 0 && id < state.gridImages.length)? 
+          state.gridImages.map((imgURL, i) => (i === id ? imageString : imgURL))
+          : [...state.gridImages, imageString]
+      return { ...state, gridImages: images  }
     }
     case 'setGridSize': {
       //TODO: Resize grids to new size. Currently does nothing

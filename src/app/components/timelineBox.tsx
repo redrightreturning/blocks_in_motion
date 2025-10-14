@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import ThreeCanvas from "./threeCanvas"
 
-export default function TimelineBox({index}: {index: number}) {
+export default function TimelineBox({index, render3D}: {index: number, render3D: boolean}) {
     
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
@@ -35,8 +35,12 @@ export default function TimelineBox({index}: {index: number}) {
                     }}>delete</button>
                 </div>
             </div>
+            { typeof gridsState.gridImages[index] === "string" &&
+                gridsState.gridImages[index].length > 0 ? 
+                <img src={gridsState.gridImages[index]} alt={`Grid ${index}`} onClick={()=>{
+                    gridsDispatch({type: 'setSelected', id: index})}}/> 
+                : null}
             
-            <ThreeCanvas editable={false} gridIndex={index} onClick={()=>{gridsDispatch({type: 'setSelected', id: index})}}></ThreeCanvas>
         </div>
     )
 }

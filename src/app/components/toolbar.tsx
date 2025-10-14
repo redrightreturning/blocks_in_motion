@@ -8,6 +8,7 @@ import { PopUp } from "./popup";
 import { ProjectSettings } from "./projectSettings";
 import { Pagination } from "./pagination";
 import { HelpPageOne, HelpPageTwo } from "./helpPages";
+import { downloadDataURL, renderGif } from "../helpers/renderer";
 
 export default function Toolbar() {
 
@@ -25,7 +26,9 @@ export default function Toolbar() {
 
             <div className="h-auto">
                 <Button onClick={()=>{
-                    gridsDispatch({type:'render'})
+                    renderGif(gridsState.gridImages, (dataURL : string)=>{
+                        downloadDataURL(dataURL, "Boxes_in_Motion.gif")
+                    })
                 }}>
                     <Icon type="download" />
                 </Button>

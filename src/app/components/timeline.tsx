@@ -1,6 +1,5 @@
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import Button from "./ui/button";
-import ThreeCanvas from "./threeCanvas";
 import TimelineBox from "./timelineBox";
 
 export default function Timeline() {
@@ -15,7 +14,7 @@ export default function Timeline() {
         <div className="w-full mt-4 flex flex-row overflow-x-auto gap-4">
             {
                 gridsState.grids.map((_, index) => (
-                    <TimelineBox index={index} key={index}/>
+                    <TimelineBox render3D={index === gridsState.selectedGridIndex} index={index} key={index}/>
                 ))
             }
             <div className="h-full flex flex-col justify-stretch items-center">
