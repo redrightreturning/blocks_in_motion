@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
-import ThreeCanvas from "./threeCanvas"
 
-export default function TimelineBox({index, render3D}: {index: number, render3D: boolean}) {
+export default function TimelineBox({index}: {index: number}) {
     
     const gridsState = useGridsState()
     const gridsDispatch = useGridsDispatch()
@@ -35,8 +34,11 @@ export default function TimelineBox({index, render3D}: {index: number, render3D:
                     }}>delete</button>
                 </div>
             </div>
-            { typeof gridsState.gridImages[index] === "string" &&
+            { 
+                
+                typeof gridsState.gridImages[index] === "string" &&
                 gridsState.gridImages[index].length > 0 ? 
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={gridsState.gridImages[index]} alt={`Grid ${index}`} onClick={()=>{
                     gridsDispatch({type: 'setSelected', id: index})}}/> 
                 : null}

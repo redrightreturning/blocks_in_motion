@@ -1,6 +1,6 @@
 import { invalidate, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
-import { downloadDataURL, renderFrame } from "../helpers/renderer";
+import { renderFrame } from "../helpers/renderer";
 import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 
 
@@ -23,7 +23,7 @@ export function CanvasRenderer({gridIndex} : {gridIndex: number}) {
             })
         })
     },
-    [gl, gridIndex, gridsState.grids]);
+    [gl, gridIndex, gridsState.grids, gridsDispatch]);
 
     return null
 }

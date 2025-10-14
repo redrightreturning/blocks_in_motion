@@ -1,4 +1,4 @@
-import { Canvas, useThree} from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Box from "./box";
 import { Array3D } from "../helpers/array3D";
@@ -6,7 +6,6 @@ import { useGridsDispatch, useGridsState } from "../helpers/gridsContext";
 import { BoxType, RenderType } from "../types/gridTypes.interface";
 import { IndexType } from "../types/indexType.interface";
 import { NoiseEffect } from "./noiseEffect";
-import { CanvasRenderer } from "./canvasRenderer";
 
 export default function ThreeCanvas({ editable, gridIndex, onClick, children} : { editable : boolean, gridIndex: number, onClick?: () => void, children? : React.ReactNode}) {
 
