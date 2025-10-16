@@ -1,5 +1,7 @@
 'use client'
 import { CanvasRenderer } from "./components/canvasRenderer";
+import Logo from "./components/logo";
+import Image from "next/image";
 import ThreeCanvas from "./components/threeCanvas";
 import Timeline from "./components/timeline";
 import Toolbar from "./components/toolbar";
@@ -16,7 +18,14 @@ export default function Home() {
   return (
     <div className="font-inter w-full h-screen flex flex-col justify-center items-center">
       <header className="flex flex-row justify-start items-center w-full pl-5 pt-5">
-        <h1>Boxes in Motion</h1>
+        <div className="font-bold text-white relative group transition-duration-300">
+          <div className="z-10 relative group-hover:opacity-0 transition-opacity ">
+            <Logo/>
+            <h2 className="-mt-8 ml-2">Boxes in Motion</h2>
+          </div>
+          <Image className="opacity-0 group-hover:opacity-100 transition-opacity absolute left-0 top-0 z-0" 
+            priority={true}  alt="Yellow animated boxes" src="/Boxes_in_Motion.gif" width="200" height="200" />
+        </div>
       </header>
       <div className="mx-10 w-full px-2 sm:px-0 sm:w-3/4 md:w-1/2 h-screen flex flex-col justify-center items-center">
         <div className="w-full h-1/2 border-4 border-black rounded-lg overflow-hidden">

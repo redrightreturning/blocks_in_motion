@@ -16,8 +16,8 @@ const defaultState : GridsStateType= {
       selectedGridIndex: 0,
       mode: "bottomUp",
       gridSize: GRID_SIZE,
-      noiseOn: false,
-      onionOn: false,
+      noiseOn: true,
+      onionOn: true,
       playing: false
   }
 

@@ -6,13 +6,19 @@ export function persistReducer(
 ) {
   return (state: GridsStateType, action: GridsActionType): GridsStateType => {
     const newState = reducer(state, action)
-
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(newState ?? {}))
-    } catch (err) {
-      console.error("Failed to persist state", err)
+    //Only update if not the indexing (temp) actions
+    if(action.type !== "setSelected" 
+      && action.type !== "setForward" 
+      && action.type !== "setBackward"
+      && action.type !== "setPlaying"){
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(newState ?? {}))
+      } catch (err) {
+        console.error("Failed to persist state", err)
+      }
     }
 
     return newState;
   }
 }
+

@@ -11,7 +11,9 @@ export default function TimelineBox({index}: {index: number}) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <div className={`relative w-20 h-20 cursor-pointer border-2 ${(index === gridsState.selectedGridIndex)? "border-yellow-300" : "border-black" } rounded-lg flex-shrink-0 overflow-hidden`} key={index}>
+        <div className={`relative w-20 h-20 cursor-pointer border-2 ${(index === gridsState.selectedGridIndex)? "border-yellow-300" : "border-black" } rounded-lg flex-shrink-0 overflow-hidden`} 
+        key={index} onClick={()=>{
+                    gridsDispatch({type: 'setSelected', id: index})}}>
             <div className="absolute group z-30 right-1 -top-1">
                 <button onClick={(e)=>{
                     e.stopPropagation()
@@ -39,8 +41,7 @@ export default function TimelineBox({index}: {index: number}) {
                 typeof gridsState.gridImages[index] === "string" &&
                 gridsState.gridImages[index].length > 0 ? 
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gridsState.gridImages[index]} alt={`Grid ${index}`} onClick={()=>{
-                    gridsDispatch({type: 'setSelected', id: index})}}/> 
+                <img src={gridsState.gridImages[index]} alt={`Grid ${index}`}/> 
                 : null}
             
         </div>

@@ -42,7 +42,7 @@ export default function ThreeCanvas({ editable, gridIndex, onClick, children} : 
     }
 
     return (
-        <Canvas onClick={onClick} className="bg-canvas-background cursor-pointer" camera={{ position: [5, 5, 5], fov: 50 }}>
+        <Canvas onClick={onClick} className="bg-canvas-background cursor-pointer" camera={{ position: [5, 8, 5], fov: 50 }}>
             <ambientLight intensity={Math.PI / 2} />
             <spotLight position={[0, 10, 10]} angle={0.5} penumbra={1} decay={0} intensity={1} />
             <spotLight position={[0, -10, -10]} angle={0.5} penumbra={1} decay={0} intensity={0.8} />
