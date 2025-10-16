@@ -26,7 +26,6 @@ export function CanvasRenderer({gridIndex} : {gridIndex: number}) {
 
             gl.render(scene, camera);
 
-            console.log("Rendering frame for index: " + gridIndex)
             renderFrame(gl, (dataURL: string) => {
                 gridsDispatch({ type: "setGridImage", id: gridIndex, imageString: dataURL });
             })

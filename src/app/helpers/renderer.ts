@@ -15,7 +15,8 @@ export function renderGif(frames : string[], exportCallback : ExportCallbackType
     workers: 2,
     quality: 10,
     workerScript: '/gif.worker.js',
-    transparent: 0x000000
+    transparent: 0x000000,
+    repeat: 0
   })
 
   frames.forEach((frame, i)=>{
