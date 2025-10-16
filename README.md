@@ -1,6 +1,8 @@
 # BiM &middot; (Blocks in Motion) &middot; ![Prelease Version 0.5](https://img.shields.io/badge/Pre--release_Version-0.5-yellow) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/redrightreturning/blocks_in_motion) [![Vercel](https://img.shields.io/badge/Deploy-Vercel-blue?logo=vercel)](https://boxes-in-motion.vercel.app/)
 
-BiM (Blocks in Motion) is a voxel animator using frame-by-frame animations.
+[BiM (Blocks in Motion)](https://blocks-in-motion.vercel.app/) is a voxel animator using frame-by-frame animation.
+
+![The interface of Blocks in Motion, building from the bottom up](/public/BiM_Building.gif)
 
 ## Technologies Used ⚙
 - React
@@ -19,6 +21,9 @@ BiM (Blocks in Motion) is a voxel animator using frame-by-frame animations.
 - eslint
 - pnpm
 
+<br>
+
+![The interface of Blocks in Motion, demonstrating playback](/public/BiM_Playback.gif)
 
 ## Project Roadmap 🚛
 ### V1
@@ -28,11 +33,9 @@ BiM (Blocks in Motion) is a voxel animator using frame-by-frame animations.
     - [ ] Complimentary color for hover
     - [ ] Similar color for onion
 - [ ] Show grid
-- [ ] Scroll to selected canvas
 - [ ] Undo/Redo
 - [ ] UI Animations
 - [ ] Alternative 3D objects
-- [ ] Loading indicators until loaded
 - [ ] Export file/Upload file as xml/json
 - [ ] Projects
 - [ ] Slider input method
@@ -48,6 +51,11 @@ BiM (Blocks in Motion) is a voxel animator using frame-by-frame animations.
 ## Installation 🧩
 
 ```sh
+
+# Clone the repository
+git clone https://github.com/redrightreturning/blocks_in_motion.git  
+cd blocks_in_motion
+
 # Install dependencies (only the first time)
 npm install
 
@@ -58,6 +66,10 @@ pnpm run dev
 pnpm build
 pnpm run
 ```
+
+Visit http://localhost:3000
+
+You can also try it live: [Blocks in Motion](https://blocks-in-motion.vercel.app/)
 
 
 ## Troubleshooting 🛠
