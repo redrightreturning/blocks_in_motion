@@ -40,7 +40,7 @@ export function Playback(){
 
     return (
 
-            <div className="flex flex-row gap-4 justify-stretch items-stretch">
+            <div className="flex flex-row sm:flex-col gap-2 sm:gap-4 justify-stretch items-stretch">
                 <Button onClick={()=>{
                     gridsDispatch({type: 'setBackward'})
                 }}>

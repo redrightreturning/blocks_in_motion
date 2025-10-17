@@ -1,7 +1,6 @@
 'use client'
 import { CanvasRenderer } from "./components/canvasRenderer";
 import Logo from "./components/logo";
-import Image from "next/image";
 import ThreeCanvas from "./components/threeCanvas";
 import Timeline from "./components/timeline";
 import Toolbar from "./components/toolbar";
@@ -16,22 +15,24 @@ export default function Home() {
   }
 
   return (
-    <div className="font-inter w-full h-screen flex flex-col justify-center items-center">
-      <header className="flex flex-row justify-start items-center w-full pl-5 pt-5">
-        <div className="font-bold text-white relative group transition-duration-300">
-          <div className="z-10 relative group-hover:opacity-0 transition-opacity ">
-            <Logo/>
-            <h2 className="-mt-8 ml-2">Boxes in Motion</h2>
+    <div className="font-inter w-full h-screen flex flex-col justify-stretch items-center p-4">
+        <div className="sm:hidden flex flex-row justify-center items-center">
+          <Logo/>
+        </div>
+
+        <div className="flex flex-row justify-stretch items-center w-full flex-grow gap-4">
+          <div className="h-full hidden sm:block">
+            <Toolbar/>
           </div>
-          <Image className="opacity-0 group-hover:opacity-100 transition-opacity absolute left-0 top-0 z-0" 
-            priority={true}  alt="Yellow animated boxes" src="/Boxes_in_Motion.gif" width="200" height="200" />
+          <div className="w-full h-full border-4 border-black rounded-lg overflow-hidden flex-grow">
+            <ThreeCanvas editable={true} gridIndex={gridsState.selectedGridIndex}/>
+          </div>
         </div>
-      </header>
-      <div className="mx-10 w-full px-2 sm:px-0 sm:w-3/4 md:w-1/2 h-screen flex flex-col justify-center items-center">
-        <div className="w-full h-1/2 border-4 border-black rounded-lg overflow-hidden">
-          <ThreeCanvas editable={true} gridIndex={gridsState.selectedGridIndex}/>
+
+        <div className="w-full block sm:hidden">
+          <Toolbar />
         </div>
-        <Toolbar/>
+        
         <Timeline/>
         {/* Invisible canvas for rendering frames */}
         <div className='invisible absolute w-screen h-screen'>
@@ -40,6 +41,5 @@ export default function Home() {
           </ThreeCanvas>
         </div>
       </div>
-    </div>
   );
 }
