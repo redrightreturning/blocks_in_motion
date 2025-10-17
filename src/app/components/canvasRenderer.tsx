@@ -31,7 +31,7 @@ export function CanvasRenderer({gridIndex} : {gridIndex: number}) {
             })
         })
     },
-    [gl, gridIndex, gridsState.grids, gridsDispatch, gridsState.playing]);
+    [gl, camera, scene, gridIndex, gridsState.grids, gridsDispatch, gridsState.playing]);
 
     return null
 }

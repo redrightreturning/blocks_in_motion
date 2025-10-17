@@ -1,9 +1,10 @@
 'use client'
-import React, { createContext, useContext, useReducer, ReactNode, useEffect  } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
 import { Array3D, Array3DType } from './array3D';
 import { IndexType } from '../types/indexType.interface';
 import { GridModeType } from '../types/gridTypes.interface';
 import { persistReducer } from './saveState';
+import { demoManager } from './useDemo';
 
 const GRID_SIZE = 5
 const GridsContext = createContext<GridsStateType | undefined>(undefined)
@@ -29,6 +30,7 @@ export type GridsActionType =
   | { type: "update"; index: IndexType}
   | { type: "remove"; id: number }
   | { type: "reset"}
+  | { type: "restoreDemo"}
   | { type: "setGridImage"; id: number; imageString: string}
   //Grid settings actions
   | { type: "setSelected"; id: number }
@@ -62,6 +64,11 @@ export function useGridsDispatch() {
 export function GridsProvider({ children }: { children: ReactNode }) {
   
   const [state, dispatch] = useReducer(persistReducer(gridsReducer, GRID_STORAGE_KEY), defaultState);
+ 
+  useEffect(() => {
+      demoManager.loadDemo();
+  }, []);
+  
   // On mount, update state from localStorage if available (client-side only)
   useEffect(() => {
     try{
@@ -74,7 +81,10 @@ export function GridsProvider({ children }: { children: ReactNode }) {
         }
         //Reset render count
         newState.render = 0
+        console.log(newState)
         dispatch({type: "setGridState", state: newState}) 
+      }else if(demoManager.getDemoData() !== null){
+        dispatch({type: "setGridState", state: demoManager.getDemoData() as GridsStateType})
       }
     }catch (err){
       console.error("Failed to get init state: ", err); 
@@ -143,6 +153,14 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
         grids: emptyGrid(), 
         selectedGridIndex: 0,
       };
+    }
+    case 'restoreDemo': {
+      const demoData = demoManager.getDemoData();
+      if (!demoData) {
+          console.error("Demo not loaded yet");
+          return state
+      }
+      return demoData
     }
     case 'setSelected': {
       return { ...state, selectedGridIndex: action.id};

@@ -64,7 +64,9 @@ export default function Toolbar() {
             {showSettings && <PopUp title="Project Settings" showCancel={true}  clickBgToClose={true}  onClose={()=>{
                     setShowSettings(false)
                 }}>
-                    <ProjectSettings/>
+                    <ProjectSettings closeCallback={()=>{
+                        setShowSettings(false)
+                    }}/>
                 </PopUp>}
 
             {showHelp && <PopUp showCancel={false} clickBgToClose={true} onClose={()=>{
