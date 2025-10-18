@@ -120,12 +120,18 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
       };
     }
     case 'duplicate': {
+      
+      const index = action.id !== undefined? action.id : state.selectedGridIndex
+
       return {
         ...state,
-        grids: [...state.grids.slice(0, action.id ?? state.grids.length-1),
-                Array3D.newFromArray(state.grids[action.id ?? state.selectedGridIndex]),
-                ...state.grids.slice(action.id ?? state.grids.length-1),],
-        selectedGridIndex: action.id?  action.id + 1 : state.grids.length,      
+        grids: [...state.grids.slice(0, index + 1),
+                Array3D.newFromArray(state.grids[index]),
+                ...state.grids.slice(index + 1)],
+        gridImages: [...state.gridImages.slice(0, index + 1),
+                state.gridImages[index],
+                ...state.gridImages.slice(index + 1),],
+        selectedGridIndex: index + 1,      
       };
     }
     case 'update': {

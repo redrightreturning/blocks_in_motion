@@ -22,15 +22,18 @@ export default function TimelineBox({index}: {index: number}) {
                 <div className={`
                     ${isMenuOpen ? "block" : "hidden"}
                     group-hover:block text-right absolute text-white text-xs p-1 rounded-b-lg right-0`}>
-                    <button onClick={()=>{
+                    <button onClick={(e)=>{
+                        e.stopPropagation()
                         gridsDispatch({type:"add", id: index})
                         setIsMenuOpen(false)
                     }}>add</button>
-                    <button onClick={()=>{
+                    <button onClick={(e)=>{
+                        e.stopPropagation()
                         gridsDispatch({type:"duplicate", id: index})
                         setIsMenuOpen(false)
                     }}>duplicate</button>
-                    <button onClick={()=>{
+                    <button onClick={(e)=>{
+                        e.stopPropagation()
                         gridsDispatch({type:"remove", id: index})
                         setIsMenuOpen(false)    
                     }}>delete</button>
