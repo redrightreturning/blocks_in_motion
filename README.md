@@ -2,7 +2,7 @@
 
 [BiM (Blocks in Motion)](https://blocks-in-motion.vercel.app/) is a voxel animator using frame-by-frame animation.
 
-![The interface of Blocks in Motion, building from the bottom up](/public/BiM_Building.gif)
+![The interface of Blocks in Motion, building from the bottom up](/public/BiMInterface_demo.gif)
 
 ## Technologies Used ⚙
 - React
@@ -21,9 +21,7 @@
 - eslint
 - pnpm
 
-<br>
 
-![The interface of Blocks in Motion, demonstrating playback](/public/BiM_Playback.gif)
 
 ## Project Roadmap 🚛
 ### V1

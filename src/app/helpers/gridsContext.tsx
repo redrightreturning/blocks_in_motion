@@ -143,6 +143,9 @@ function gridsReducer(state: GridsStateType, action: GridsActionType): GridsStat
       };
     }
     case 'remove': {
+      if(state.grids.length <= 1){
+        return state //Don't allow removing last grid
+      }
       return {
         ...state,
         grids: state.grids.filter((_, i) => i !== action.id),

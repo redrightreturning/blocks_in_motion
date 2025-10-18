@@ -32,7 +32,7 @@ export default function TimelineBox({index}: {index: number}) {
                         gridsDispatch({type:"duplicate", id: index})
                         setIsMenuOpen(false)
                     }}>duplicate</button>
-                    <button onClick={(e)=>{
+                    <button className={`${gridsState.grids.length === 1? "invisible" : "visible"}`} onClick={(e)=>{
                         e.stopPropagation()
                         gridsDispatch({type:"remove", id: index})
                         setIsMenuOpen(false)    
@@ -40,12 +40,12 @@ export default function TimelineBox({index}: {index: number}) {
                 </div>
             </div>
             { 
-                
                 typeof gridsState.gridImages[index] === "string" &&
                 gridsState.gridImages[index].length > 0 ? 
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={gridsState.gridImages[index]} alt={`Grid ${index}`}/> 
-                : null}
+                : null
+            }
             
         </div>
     )
