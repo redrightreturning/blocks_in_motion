@@ -15,7 +15,7 @@ export default function Home() {
   }
 
   return (
-    <div className="font-inter w-full h-screen flex flex-col justify-stretch items-center p-4">
+    <div className="font-inter w-full h-screen min-h-[100dvh] flex flex-col justify-stretch items-center p-4">
         <div className="sm:hidden flex flex-row justify-center items-center">
           <Logo/>
         </div>
