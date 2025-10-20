@@ -11,7 +11,7 @@ export default function Timeline() {
     }
     
     return(
-        <div className="w-full mt-4 flex flex-row overflow-x-auto gap-4">
+        <div className="w-full mt-4 flex flex-row items-start overflow-x-auto flex-shrink-0 gap-4">
             {
                 gridsState.grids.map((_, index) => (
                     <TimelineBox index={index} key={index}/>

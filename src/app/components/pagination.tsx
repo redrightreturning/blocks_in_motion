@@ -20,10 +20,11 @@ export function Pagination({pages, closeHandler} : {pages: {buttonLabel: string,
 
     return(
         <div className="flex flex-col justify-center items-stretch gap-4 relative">
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-between items-center gap-2">
                 <button className={`${(pageIndex !==0)? "visible" : "invisible"}`} onClick={()=>{
                     changePage("left")
                 }}><Icon type="left" /></button>
+
                 {pages[pageIndex].node}
             
                 <button className={`${(pageIndex !== pages.length - 1)? "visible" : "invisible"}`} onClick={()=>{

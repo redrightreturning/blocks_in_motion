@@ -20,7 +20,7 @@ export default function Home() {
           <Logo/>
         </div>
 
-        <div className="flex flex-row justify-stretch items-center w-full flex-grow gap-4">
+        <div className="flex flex-row justify-stretch items-center w-full flex-grow gap-4 min-h-0">
           <div className="h-full hidden sm:block">
             <Toolbar/>
           </div>
@@ -29,16 +29,18 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="w-full block sm:hidden">
+        <div className="w-full flex-shrink block sm:hidden">
           <Toolbar />
         </div>
         
         <Timeline/>
         {/* Invisible canvas for rendering frames */}
-        <div className='invisible absolute aspect-square w-screen h-screen'>
-          <ThreeCanvas editable={false} gridIndex={gridsState.selectedGridIndex}>
-            <CanvasRenderer gridIndex={gridsState.selectedGridIndex}/>
-          </ThreeCanvas>
+        <div className='invisible absolute top-0 left-0 pointer-events-none w-0 h-0 overflow-hidden'>
+          <div className="w-screen aspect-square">
+            <ThreeCanvas editable={false} gridIndex={gridsState.selectedGridIndex}>
+              <CanvasRenderer gridIndex={gridsState.selectedGridIndex}/>
+            </ThreeCanvas>
+          </div>
         </div>
       </div>
   );
