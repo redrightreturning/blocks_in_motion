@@ -35,7 +35,7 @@ export default function Home() {
         
         <Timeline/>
         {/* Invisible canvas for rendering frames */}
-        <div className='invisible absolute w-screen h-screen'>
+        <div className='invisible absolute aspect-square w-screen h-screen'>
           <ThreeCanvas editable={false} gridIndex={gridsState.selectedGridIndex}>
             <CanvasRenderer gridIndex={gridsState.selectedGridIndex}/>
           </ThreeCanvas>

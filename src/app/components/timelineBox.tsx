@@ -43,7 +43,7 @@ export default function TimelineBox({index}: {index: number}) {
                 typeof gridsState.gridImages[index] === "string" &&
                 gridsState.gridImages[index].length > 0 ? 
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gridsState.gridImages[index]} alt={`Grid ${index}`}/> 
+                <img className="h-full w-full object-contain" src={gridsState.gridImages[index]} alt={`Grid ${index}`}/> 
                 : null
             }
             
