@@ -1,4 +1,4 @@
-# BiM &middot; (Blocks in Motion) &middot; ![Prelease Version 0.5](https://img.shields.io/badge/Pre--release_Version-0.5-yellow) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/redrightreturning/blocks_in_motion) [![Vercel](https://img.shields.io/badge/Deploy-Vercel-blue?logo=vercel)](https://boxes-in-motion.vercel.app/)
+# BiM &middot; (Blocks in Motion) &middot; ![Prelease Version 0.8](https://img.shields.io/badge/Pre--release_Version-0.5-yellow) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/redrightreturning/blocks_in_motion) [![Vercel](https://img.shields.io/badge/Deploy-Vercel-blue?logo=vercel)](https://boxes-in-motion.vercel.app/)
 
 [BiM (Blocks in Motion)](https://blocks-in-motion.vercel.app/) is a voxel animator using frame-by-frame animation.
 
